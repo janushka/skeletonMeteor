@@ -7,3 +7,5 @@
 meteor-platform
 autopublish
 insecure
+grigio:babel
+iron:router
