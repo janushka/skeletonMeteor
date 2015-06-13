@@ -1,3 +1,18 @@
+Template.Navigation.helpers({
+    activeRouteClass: function (/* route names */) {
+        var args = Array.prototype.slice.call(arguments, 0);
+        args.pop();
+        var active = _.any(args, function (name) {
+            return Router.current() && Router.current().route.getName() === name
+        });
+        return active && 'active';
+    },
+
+    categories: function () {
+        return Categories.find({}, {sort: {name: 1}});
+    }
+});
+
 Template.Navigation.events({
     'click .logout-forward': function () {
         console.log('Login out!');
@@ -10,6 +25,11 @@ Template.Navigation.events({
                 Router.go('home');
             }
         });
+    },
+
+    'click .booking-new': function () {
+        console.log('New booking!');
+        Router.go('booking_new');
     }
 });
 

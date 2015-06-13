@@ -4,7 +4,7 @@
         <div class="container">
             <ul class="navbar-list">
                 <li class="navbar-item">
-                    <a class="navbar-link" href="#" data-popover="#umsatzPopover">Umsätze</a>
+                    <a class="navbar-link {{activeRouteClass 'booking_list'}}" href="#" data-popover="#umsatzPopover">Umsätze</a>
                     <div id="umsatzPopover" class="popover">
                         <ul class="popover-list">
                             <li class="popover-item">
@@ -17,7 +17,7 @@
                     </div>
                 </li>
                 <li class="navbar-item">
-                    <a class="navbar-link" href="#">Neue Buchung</a>
+                    <a class="navbar-link booking-new {{activeRouteClass 'booking_new'}}" href="#">Neue Buchung</a>
                 </li>
                 <li class="navbar-item">
                     <a class="navbar-link" href="#">Neue Kategorie</a>

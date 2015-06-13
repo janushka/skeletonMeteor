@@ -61,6 +61,12 @@ Router.map(function () {
         controller: 'BookingsListController'
 
     });
+
+    this.route('booking_new', {
+        path: '/booking_new',
+        controller: 'BookingNewController'
+
+    });
 });
 
 // CONTROLLERS
@@ -104,6 +110,25 @@ BookingsListController = RouteController.extend({
             Session.set('bookingsLimit', this.bookingsLimit());
             console.log('Template can be rendered!');
             //this.render();
+        }
+    }
+});
+
+BookingNewController = RouteController.extend({
+    onBeforeAction: function () {
+        if (!Meteor.userId()) {
+            Router.go('home');
+        } else {
+            // otherwise don't hold up the rest of hooks or our route/action function
+            // from running
+            this.next();
+        }
+    },
+    action: function () {
+        if (this.ready()) {
+            this.render('ContentHeader', {to: 'header'});
+            this.render('Navigation', {to: 'navigation'});
+            this.render('BookingNew', {to: 'content'});
         }
     }
 });
