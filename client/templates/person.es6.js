@@ -2,13 +2,13 @@ if (Meteor.isClient) {
     // counter starts at 0
     Session.setDefault('counter', 0);
 
-    Template.home.helpers({
+    Template.Navigation.helpers({
         counter: function () {
             return Session.get('counter');
         }
     });
 
-    Template.home.events({
+    Template.Navigation.events({
         'click .do_not_submit': function (event) {
             event.preventDefault();
             var person = new Person('Janne', 'Njoku');

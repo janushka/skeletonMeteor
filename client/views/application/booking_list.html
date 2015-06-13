@@ -1,0 +1,43 @@
+<template name="BookingList">
+    <div class="docs-section">
+        <h6 class="docs-header">Ausgaben {{ categoryTitle }}</h6>
+
+        <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem Tag, Woche, Monat und Jahr aufgerufen werden.
+            Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
+            Standardmäßig wird die aktuelle Woche vorselektiert.</p>
+
+        <div class="row">
+            <div class="twelve columns">
+                <table id="booking_list" class="u-full-width">
+                    <thead class="slab-700">
+                    <tr>
+                        <th class="align-left">Datum</th>
+                        <th class="align-left">Anmerkung</th>
+                        <th class="align-left">Kategorie</th>
+                        <th class="align-left">Betrag (€)</th>
+                        <th class="align-center"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each bookings}}
+                        <tr>
+                            <td>07.06.2015</td>
+                            <td>{{ remark }}</td>
+                            <td>{{ category }}</td>
+                            <td>{{ amount }}</td>
+                            <td>
+                                <a href="{{pathFor 'edit_booking'}}">Ändern</a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+                {{#if nextPath}}
+                    <a class="slab-600" href="{{nextPath}}">Weitere laden...</a>
+                {{/if}}
+            </div>
+        </div>
+
+
+    </div>
+</template>

@@ -1,6 +1,10 @@
 <head>
-    <title>hello</title>
+    <title>Hausverwaltung</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body class="code-snippets-visible" style="height: 1000px;">
@@ -9,12 +13,8 @@
 <template name="appBody">
     <!-- .container is main centered wrapper -->
     <div class="container">
-        <section class="header">
-            <h2 class="title">Hausverwaltung.</h2>
-            <h5>Pflege und Übersicht der Ein- und Ausgaben (letzten 12 Monate)</h5>
-        </section>
-        {{> yield "login"}}
+        {{> yield "header" }}
         <!-- columns should be the immediate child of a .row -->
-        {{> yield }}
+        {{> yield "content" }}
     </div>
 </template>

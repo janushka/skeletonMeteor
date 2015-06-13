@@ -1,0 +1,52 @@
+<template name="Navigation">
+    <div class="navbar-spacer"></div>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-list">
+                <li class="navbar-item">
+                    <a class="navbar-link" href="#" data-popover="#umsatzPopover">Umsätze</a>
+                    <div id="umsatzPopover" class="popover">
+                        <ul class="popover-list">
+                            <li class="popover-item">
+                                <a class="popover-link" href="">Tagesansicht</a>
+                            </li>
+                            <li class="popover-item">
+                                <a class="popover-link" href="">Wochenansicht</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="#">Neue Buchung</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="#">Neue Kategorie</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="#" data-popover="#statistikPopover">Statistik</a>
+                    <div id="statistikPopover" class="popover">
+                        <ul class="popover-list">
+                            <li class="popover-item">
+                                <a class="popover-link" href="">Ausgabekategorie</a>
+                            </li>
+                            <li class="popover-item">
+                                <a class="popover-link" href="">Zeitraum</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="#" data-popover="#morePopover">Mehr</a>
+
+                    <div id="morePopover" class="popover">
+                        <ul class="popover-list">
+                            <li class="popover-item">
+                                <a class="popover-link logout-forward" href="/">Abmelden</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</template>

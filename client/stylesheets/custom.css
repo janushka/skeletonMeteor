@@ -7,6 +7,19 @@
     text-align: center;
 }
 
+.header-content-left {
+    margin-top: 3rem;
+}
+
+.header-content-right {
+    margin-top: 5rem;
+}
+
+.header-content-right .logged-user {
+    text-align: right;
+    color: #33C3F0;
+}
+
 .login-props {
     text-align: center;
 }
@@ -17,6 +30,12 @@
 
 .signin-prop {
     text-align: left;
+}
+
+.notification{
+    margin-top: 2rem;
+    text-align: left;
+    color: #bbb;
 }
 
 .value-prop {
@@ -254,7 +273,7 @@
         border: 1px solid #eee;
         border-radius: 4px;
         top: 92%;
-        left: -50%;
+        left: -40%;
         -webkit-filter: drop-shadow(0 0 6px rgba(0, 0, 0, .1));
         -moz-filter: drop-shadow(0 0 6px rgba(0, 0, 0, .1));
         filter: drop-shadow(0 0 6px rgba(0, 0, 0, .1));

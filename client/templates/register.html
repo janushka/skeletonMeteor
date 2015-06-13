@@ -1,37 +1,42 @@
 <template name="Register">
     <div class="signin-props row">
-        <div class="four columns">&nbsp;
+        <div class="three columns">&nbsp;
         </div>
-        <div class="four columns">
+        <div class="six columns">
             <form>
                 <div class="row">
                     <div class="twelve columns signin-prop">
                         <label for="usernameInput">Benutzername</label>
-                        <input class="u-full-width" type="text" placeholder="Max Mustermann"
+                        <input class="u-full-width uname" type="text" placeholder="Max Mustermann"
                                id="usernameInput">
                     </div>
                 </div>
                 <div class="row">
                     <div class="twelve columns signin-prop">
                         <label for="usernamePassword">Passwort</label>
-                        <input class="u-full-width" type="password" placeholder=""
+                        <input class="u-full-width upass" type="password" placeholder=""
                                id="usernamePassword">
                     </div>
                 </div>
                 <div class="row">
                     <div class="twelve columns signin-prop">
                         <label for="usernamePasswordConfirm">Passwort wiederholen</label>
-                        <input class="u-full-width" type="password" placeholder=""
+                        <input class="u-full-width upass-confirm" type="password" placeholder=""
                                id="usernamePasswordConfirm">
                     </div>
                 </div>
                 <div class="row signin-prop">
-                    <input class="button-primary" type="submit" value="Senden">
-                    <a class="button register back-login">zurück</a>
+                    <a class="button button-primary forward-register">senden</a>
+                    <a class="button register back-register">zurück</a>
+                </div>
+                <div class="row">
+                    <div class="twelve columns signin-prop notification">
+                        <strong>{{ validationMessage }}</strong>
+                    </div>
                 </div>
             </form>
         </div>
-        <div class="four columns">&nbsp;
+        <div class="three columns">&nbsp;
         </div>
     </div>
 </template>
