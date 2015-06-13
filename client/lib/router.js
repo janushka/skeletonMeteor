@@ -67,6 +67,12 @@ Router.map(function () {
         controller: 'BookingNewController'
 
     });
+
+    this.route('category_new', {
+        path: '/category_new',
+        controller: 'CategoryNewController'
+
+    });
 });
 
 // CONTROLLERS
@@ -129,6 +135,25 @@ BookingNewController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('BookingNew', {to: 'content'});
+        }
+    }
+});
+
+CategoryNewController = RouteController.extend({
+    onBeforeAction: function () {
+        if (!Meteor.userId()) {
+            Router.go('home');
+        } else {
+            // otherwise don't hold up the rest of hooks or our route/action function
+            // from running
+            this.next();
+        }
+    },
+    action: function () {
+        if (this.ready()) {
+            this.render('ContentHeader', {to: 'header'});
+            this.render('Navigation', {to: 'navigation'});
+            this.render('CategoryNew', {to: 'content'});
         }
     }
 });
