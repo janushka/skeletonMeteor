@@ -8,10 +8,10 @@
                     <div id="umsatzPopover" class="popover">
                         <ul class="popover-list">
                             <li class="popover-item">
-                                <a class="popover-link" href="">Tagesansicht</a>
+                                <a class="popover-link" href="{{pathFor route='booking_list'}}">Tagesansicht</a>
                             </li>
                             <li class="popover-item">
-                                <a class="popover-link" href="">Wochenansicht</a>
+                                <a class="popover-link" href="{{pathFor route='booking_list'}}">Wochenansicht</a>
                             </li>
                         </ul>
                     </div>
@@ -23,7 +23,9 @@
                     <a class="navbar-link category-new {{activeRouteClass 'category_new'}}" href="#">Neue Kategorie</a>
                 </li>
                 <li class="navbar-item">
-                    <a class="navbar-link statistic {{activeRouteClass 'statistic'}}" href="#" data-popover="#statistikPopover">Statistik</a>
+                    <a class="navbar-link statistic {{activeRouteClass 'statistic'}}" href="#"
+                       data-popover="#statistikPopover">Statistik</a>
+
                     <div id="statistikPopover" class="popover">
                         <ul class="popover-list">
                             <li class="popover-item">

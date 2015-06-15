@@ -10,6 +10,14 @@ Template.Navigation.helpers({
 
     categories: function () {
         return Categories.find({}, {sort: {name: 1}});
+    },
+
+    bookingListPageIsActive: function() {
+        var routeName = Router.current().route.getName();
+        if (routeName === 'booking_list') {
+            return true;
+        }
+        return false;
     }
 });
 
