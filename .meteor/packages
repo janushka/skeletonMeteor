@@ -11,3 +11,5 @@ iron:router
 accounts-password
 reactive-var
 jquery
+richsilv:pikaday
+manipulate-categoriesamounts-collection

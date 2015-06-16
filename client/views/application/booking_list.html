@@ -21,7 +21,7 @@
                     <tbody>
                     {{#each bookings}}
                         <tr>
-                            <td>07.06.2015</td>
+                            <td>{{ datum }}</td>
                             <td>{{ remark }}</td>
                             <td>{{ category }}</td>
                             <td>{{ amount }}</td>
@@ -33,7 +33,7 @@
                     </tbody>
                 </table>
                 {{#if nextPath}}
-                    <a class="slab-600" href="{{nextPath}}">Weitere laden...</a>
+                    <a href="{{nextPath}}">Weitere laden...</a>
                 {{/if}}
             </div>
         </div>

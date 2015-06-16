@@ -26,7 +26,7 @@ if (Meteor.isServer) {
             limit: Number
         });
         //console.log('The sorting order is: ' + options.sort);
-        //console.log('The limit is: ' + options.limit);
+        console.log('The limit is: ' + options.limit);
         return Bookings.find({}, options);
     });
 

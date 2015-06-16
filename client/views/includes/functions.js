@@ -2,6 +2,14 @@
  * Created by Njoku on 08.10.2014.
  */
 
+Template.ifNewBooking.isPresent = function () {
+    if (Session.get('bookingAddedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 /*Template.ifBookingData.helpers({
     isPresent: function () {
         if (Bookings.find().count() === 0) {

@@ -1,3 +1,53 @@
 <template name="CategoryNew">
-    Neue Kategorie.
+    <div class="docs-section">
+        <h6 class="docs-header">Neue Kategorie</h6>
+
+        <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
+            Tag, Woche, Monat und Jahr aufgerufen werden.
+            Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
+            Standardmäßig wird die aktuelle Woche vorselektiert.</p>
+
+        <div class="row">
+            <div class="twelve columns">
+                <form id="new_category">
+                    {{#ifNewCategory}}
+                        {{> successNewCategoryAlert }}
+                    {{/ifNewCategory}}
+
+                    <div class="row">
+                        <div class="six columns">
+                            <label for="new_category_name">Name</label>
+                            <input type="text" name="name" id="new_category_name"
+                                   class="u-full-width" {{disabledProperty}}/>
+                        </div>
+                        <div class="six columns">
+                            <label for="new_category_description">Beschreibung</label>
+                            <textarea rows="2" cols="40" name="description" id="new_category_description" class="u-full-width" {{disabledProperty}}></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <button id="submit_category" {{ bookingButtonDisabled }} {{disabledProperty}}>
+                            speichern
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</template>
+
+<template name="ifNewCategory">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
+<template name="successNewCategoryAlert">
+    <div class="ink-alert basic success" role="alert">
+        <button id="close_acknowledge_new_category" class="ink-dismiss">&times;</button>
+        <p><b>Bestätigung:</b> Kategorie erfolgreich gespeichert.</p>
+    </div>
 </template>

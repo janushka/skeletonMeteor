@@ -56,11 +56,11 @@ Router.map(function () {
         }
     });
 
-    this.route('booking_list', {
-        path: '/booking_list',
-        controller: 'BookingsListController'
+    /*this.route('booking_list', {
+     path: '/booking_list/:bookingsLimit?',
+     controller: 'BookingsListController'
 
-    });
+     });*/
 
     this.route('booking_new', {
         path: '/booking_new',
@@ -73,6 +73,12 @@ Router.map(function () {
         controller: 'CategoryNewController'
 
     });
+});
+
+Router.route('booking_list', {
+    path: 'booking_list/:bookingsLimit?',
+    controller: 'BookingsListController',
+    template: 'booking_list',
 });
 
 // CONTROLLERS
@@ -121,6 +127,13 @@ BookingsListController = RouteController.extend({
 });
 
 BookingNewController = RouteController.extend({
+    waitOn: function () {
+        return [Meteor.subscribe('bookings'), Meteor.subscribe('categories')];
+    },
+    data: function () {
+        templateData = {bookings: Bookings.find(), categories: Categories.find()};
+        return templateData;
+    },
     onBeforeAction: function () {
         if (!Meteor.userId()) {
             Router.go('home');

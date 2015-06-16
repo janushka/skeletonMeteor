@@ -10,14 +10,6 @@
         <div class="row">
             <div class="twelve columns">
                 <form id="new_booking">
-                    {{#ifCategoriesAlert}}
-                        {{> noCategoriesAlert }}
-                    {{else}}
-                    {{/ifCategoriesAlert}}
-                    {{#ifNewBooking}}
-                        {{> successBookingAlert }}
-                    {{/ifNewBooking}}
-
                     <div class="row">
                         <div class="six columns">
                             <label for="new_booking_datum">Datum</label>
@@ -57,11 +49,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button id="submit_booking"
-                                class="ink-button grey uppercase" {{ bookingButtonDisabled }} {{disabledProperty}}>
-                            buchen
-                        </button>
+                        <a id="submit_booking"
+                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>buchen</a>
                     </div>
+                    {{#ifCategoriesAlert}}
+                        {{> noCategoriesAlert }}
+                    {{else}}
+                    {{/ifCategoriesAlert}}
+                    {{#ifNewBooking}}
+                        {{> successBookingAlert }}
+                    {{/ifNewBooking}}
                 </form>
             </div>
         </div>
@@ -100,8 +97,9 @@
 </template>
 
 <template name="successBookingAlert">
-    <div class="ink-alert basic success" role="alert">
-        <button id="close_acknowledge_booking" class="ink-dismiss">&times;</button>
-        <p><b>Bestätigung:</b> Buchung erfolgreich gespeichert.</p>
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Bestätigung:</b> Buchung erfolgreich gespeichert.</p></strong>
+        </div>
     </div>
 </template>
