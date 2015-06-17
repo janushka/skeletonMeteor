@@ -76,9 +76,9 @@ Router.map(function () {
 });
 
 Router.route('booking_list', {
-    path: 'booking_list/:bookingsLimit?',
+    path: '/booking_list/:bookingsLimit?',
     controller: 'BookingsListController',
-    template: 'booking_list',
+    template: 'BookingList',
 });
 
 // CONTROLLERS

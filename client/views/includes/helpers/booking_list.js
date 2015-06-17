@@ -38,9 +38,10 @@ Template.BookingList.helpers({
         }
         return '(' + Session.get('bookingListByCategory') + ')';
     },
-    nextPath: function() {
+    nextPath: function () {
         if (Session.get('loadMoreBookings')) {
-            return Session.get('bookingsLimit') + 5;
+            var path = Session.get('bookingsLimit') + 5;
+            return path;
         }
     }
 });

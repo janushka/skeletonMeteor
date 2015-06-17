@@ -10,10 +10,6 @@
         <div class="row">
             <div class="twelve columns">
                 <form id="new_category">
-                    {{#ifNewCategory}}
-                        {{> successNewCategoryAlert }}
-                    {{/ifNewCategory}}
-
                     <div class="row">
                         <div class="six columns">
                             <label for="new_category_name">Name</label>
@@ -22,15 +18,17 @@
                         </div>
                         <div class="six columns">
                             <label for="new_category_description">Beschreibung</label>
-                            <textarea rows="2" cols="40" name="description" id="new_category_description" class="u-full-width" {{disabledProperty}}></textarea>
+                            <textarea rows="2" cols="40" name="description" id="new_category_description"
+                                      class="u-full-width" {{disabledProperty}}></textarea>
                         </div>
                     </div>
-
                     <div class="row">
-                        <button id="submit_category" {{ bookingButtonDisabled }} {{disabledProperty}}>
-                            speichern
-                        </button>
+                        <a id="submit_category"
+                           class="button" {{ categoryButtonDisabled }} {{disabledProperty}}>speichern</a>
                     </div>
+                    {{#ifNewCategory}}
+                        {{> successNewCategoryAlert }}
+                    {{/ifNewCategory}}
                 </form>
             </div>
         </div>
@@ -46,8 +44,9 @@
 </template>
 
 <template name="successNewCategoryAlert">
-    <div class="ink-alert basic success" role="alert">
-        <button id="close_acknowledge_new_category" class="ink-dismiss">&times;</button>
-        <p><b>Bestätigung:</b> Kategorie erfolgreich gespeichert.</p>
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Bestätigung:</b> Kategorie erfolgreich gespeichert.</p></strong>
+        </div>
     </div>
 </template>

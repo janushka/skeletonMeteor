@@ -25,7 +25,8 @@ Template.BookingNew.helpers({
         }
     },
     bookingButtonDisabled: function () {
-        if (Session.get('bookingAmountValid')) {
+        var categoriesCount = Categories.find().count();
+        if (Session.get('bookingAmountValid') || categoriesCount !== 0) {
             return '';
         } else {
             return 'disabled';

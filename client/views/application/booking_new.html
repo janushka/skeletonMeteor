@@ -33,7 +33,7 @@
                                 {{/each}}
                             </select>
 
-                            <p class="tip"><a href="{{pathFor 'new_category'}}">neue Kategorie</a>
+                            <p class="tip"><a href="{{pathFor 'category_new'}}">neue Kategorie</a>
                                 {{#ifCategoriesLink}}
                                     <a id="edit_category" style="padding-left:2em;" href="{{pathFor 'edit_category'}}">Kategorie
                                         ändern</a>
@@ -90,9 +90,10 @@
 </template>
 
 <template name="noCategoriesAlert">
-    <div class="ink-alert basic info" role="alert">
-        <button id="close_category_alert" class="ink-dismiss">&times;</button>
-        <p><b>Info:</b> Kategorie(n) zuvor anlegen.</p>
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Info:</b> Kategorie(n) zuvor anlegen.</p></strong>
+        </div>
     </div>
 </template>
 

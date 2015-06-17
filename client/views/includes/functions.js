@@ -1,5 +1,5 @@
 /**
- * Created by Njoku on 08.10.2014.
+ * Created by Njoku on 16.06.2015.
  */
 
 Template.ifNewBooking.isPresent = function () {
@@ -7,6 +7,33 @@ Template.ifNewBooking.isPresent = function () {
         return true;
     } else {
         return false;
+    }
+};
+
+Template.ifNewCategory.isPresent = function () {
+    if (Session.get('categoryAddedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Template.ifCategoriesAlert.isPresent = function () {
+    if (Categories.find().count() === 0) {
+        if (Session.get('categoriesAlert')) {
+            return false;
+        }
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Template.ifCategoriesLink.isPresent = function () {
+    if (Categories.find().count() === 0) {
+        return false;
+    } else {
+        return true;
     }
 };
 
