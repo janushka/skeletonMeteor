@@ -33,9 +33,9 @@
                                 {{/each}}
                             </select>
 
-                            <p class="tip"><a href="{{pathFor 'category_new'}}">neue Kategorie</a>
+                            <p><a href="{{pathFor 'category_edit'}}">neue Kategorie</a>
                                 {{#ifCategoriesLink}}
-                                    <a id="edit_category" style="padding-left:2em;" href="{{pathFor 'edit_category'}}">Kategorie
+                                    <a id="edit_category" style="padding-left:2em;" href="{{pathFor 'category_edit'}}">Kategorie
                                         ändern</a>
                                 {{ else }}
                                     <span style="padding-left:2em;">Kategorie ändern</span>

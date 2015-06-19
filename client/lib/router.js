@@ -21,13 +21,13 @@ Router.configure({
 dataReadyHold = null;
 
 //if (Meteor.isClient) {
-    // Keep showing the launch screen on mobile devices until we have loaded
-    // the app's data
-    //dataReadyHold = LaunchScreen.hold();
+// Keep showing the launch screen on mobile devices until we have loaded
+// the app's data
+//dataReadyHold = LaunchScreen.hold();
 
-    // Show the loading screen on desktop
-    //Router.onBeforeAction('loading', {except: ['join', 'signin']});
-    //Router.onBeforeAction('dataNotFound', {except: ['join', 'signin']});
+// Show the loading screen on desktop
+//Router.onBeforeAction('loading', {except: ['join', 'signin']});
+//Router.onBeforeAction('dataNotFound', {except: ['join', 'signin']});
 //}
 
 Router.map(function () {
@@ -79,6 +79,12 @@ Router.route('booking_list', {
     path: '/booking_list/:bookingsLimit?',
     controller: 'BookingsListController',
     template: 'BookingList',
+});
+
+Router.route('category_edit', {
+    path: '/category_edit',
+    controller: 'CategoryEditController'
+
 });
 
 // CONTROLLERS
@@ -167,6 +173,34 @@ CategoryNewController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('CategoryNew', {to: 'content'});
+        }
+    }
+});
+
+CategoryEditController = RouteController.extend({
+    waitOn: function () {
+        return [Meteor.subscribe('bookings'), Meteor.subscribe('categories')];
+    },
+    data: function () {
+        var templateData = {category: Categories.findOne({name: Session.get('selectedCategory')})};
+        return templateData;
+    },
+    onBeforeAction: function () {
+        if (!Meteor.userId()) {
+            Router.go('home');
+        } else {
+            // otherwise don't hold up the rest of hooks or our route/action function
+            // from running
+            this.next();
+        }
+    },
+    action: function () {
+        if (this.ready()) {
+            this.render('ContentHeader', {to: 'header'});
+            this.render('Navigation', {to: 'navigation'});
+            this.render('CategoryEdit', {to: 'content'});
+            //Session.set('editCategory', this.params.category);
+            console.log('Template Edit-Category can be rendered!');
         }
     }
 });

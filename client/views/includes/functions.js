@@ -37,6 +37,30 @@ Template.ifCategoriesLink.isPresent = function () {
     }
 };
 
+Template.ifEditCategory.isPresent = function () {
+    if (Session.get('categoryUpdatedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Template.ifNoChangesCategory.isPresent = function () {
+    if (Session.get('categoryNoChangesAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Template.ifDeleteCategory.isPresent = function () {
+    if (Session.get('categoryDeletedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 /*Template.ifBookingData.helpers({
     isPresent: function () {
         if (Bookings.find().count() === 0) {
