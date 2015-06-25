@@ -39,11 +39,6 @@ Template.BookingNew.events({
         Session.set('selectedCategory', category);
     },
 
-    'click #close_category_alert': function (event, template) {
-        event.preventDefault();
-        Session.set('categoriesAlert', true);
-    },
-
     'focus': function (event, template) {
         event.preventDefault();
         // Session variable will be checked on false once a field gains focus.

@@ -10,6 +10,30 @@ Template.ifNewBooking.isPresent = function () {
     }
 };
 
+Template.ifEditBooking.isPresent = function () {
+    if (Session.get('bookingUpdatedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Template.ifNoChangesBooking.isPresent = function () {
+    if (Session.get('bookingNoChangesAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Template.ifDeleteBooking.isPresent = function () {
+    if (Session.get('bookingDeletedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 Template.ifNewCategory.isPresent = function () {
     if (Session.get('categoryAddedAlert')) {
         return true;

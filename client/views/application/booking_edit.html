@@ -1,0 +1,105 @@
+<template name="BookingEdit">
+    <div class="docs-section">
+        <h6 class="docs-header">Buchung ändern</h6>
+
+        <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
+            Tag, Woche, Monat und Jahr aufgerufen werden.
+            Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
+            Standardmäßig wird die aktuelle Woche vorselektiert.</p>
+
+        <div class="row">
+            <div class="twelve columns">
+                <form id="new_booking">
+                    <div class="row">
+                        <div class="six columns">
+                            <label for="edit_booking_datum">Datum</label>
+                            <input type="text" name="date" id="edit_booking_datum"
+                                   class="u-full-width" {{disabledProperty}} value={{#with booking}}{{ datum }}{{/with}}>
+                        </div>
+                        <div class="six columns">
+                            <label for="edit_booking_amount">Betrag (€)</label>
+                            <input type="text" name="amount" id="edit_booking_amount"
+                                   class="u-full-width"  {{disabledProperty}} value={{#with booking}}{{ amount }}{{/with}}>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="six columns">
+                            <label for="edit_booking_category">Kategorie</label>
+
+                            <select name="category" id="edit_booking_category" class="u-full-width" {{disabledProperty}}>
+                                {{#each categories}}
+                                    <option {{selectedProperty}} value={{ name }}>{{ name }}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="six columns">
+                            <label for="new_booking_remark">Anmerkung</label>
+                            <textarea rows="2" cols="20" name="remark"
+                                      id="edit_booking_remark" class="u-full-width" {{disabledProperty}}>{{#with booking}}{{remark}}{{/with}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a id="save_booking"
+                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>speichern</a>
+                        <a id="delete_booking"
+                        class="button" {{ savingAndDeleteButtonDisabled }} {{disabledProperty}}>endgültig löschen</a>
+                    </div>
+                    {{#ifEditBooking}}
+                        {{> successEditBookingAlert }}
+                    {{/ifEditBooking}}
+                    {{#ifNoChangesBooking}}
+                        {{> noChangesInBookingAlert }}
+                    {{/ifNoChangesBooking}}
+                    {{#ifDeleteBooking}}
+                        {{> successDeleteBookingAlert }}
+                    {{/ifDeleteBooking}}
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</template>
+
+<template name="ifEditBooking">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
+<template name="ifNoChangesBooking">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
+<template name="ifDeleteBooking">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
+<template name="successEditBookingAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Bestätigung:</b> Buchung erfolgreich geändert.</p></strong>
+        </div>
+    </div>
+</template>
+
+<template name="noChangesInBookingAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Warnung:</b> Keine Änderungen festgestellt. Speichern abgebrochen!</p></strong>
+        </div>
+    </div>
+</template>
+
+<template name="successDeleteBookingAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Bestätigung:</b> Buchung erfolgreich gelöscht.</p></strong>
+        </div>
+    </div>
+</template>

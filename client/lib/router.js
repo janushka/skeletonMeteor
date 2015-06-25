@@ -81,6 +81,13 @@ Router.route('booking_list', {
     template: 'BookingList',
 });
 
+Router.route('booking_edit', {
+    //path: '/booking_edit',
+    path: '/booking_edit/:_id/category/:category',
+    controller: 'BookingEditController'
+
+});
+
 Router.route('category_edit', {
     path: '/category_edit',
     controller: 'CategoryEditController'
@@ -154,6 +161,34 @@ BookingNewController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('BookingNew', {to: 'content'});
+        }
+    }
+});
+
+BookingEditController = RouteController.extend({
+    waitOn: function () {
+        return [Meteor.subscribe('bookings'), Meteor.subscribe('categories')];
+    },
+    data: function () {
+        templateData = {booking: Bookings.findOne(this.params._id), categories: Categories.find()};
+        return templateData;
+    },
+    onBeforeAction: function () {
+        if (!Meteor.userId()) {
+            Router.go('home');
+        } else {
+            // otherwise don't hold up the rest of hooks or our route/action function
+            // from running
+            this.next();
+        }
+    },
+    action: function () {
+        if (this.ready()) {
+            this.render('ContentHeader', {to: 'header'});
+            this.render('Navigation', {to: 'navigation'});
+            this.render('BookingEdit', {to: 'content'});
+            Session.set('editBookingCategory', this.params.category);
+            console.log('Template Edit-Booking can be rendered!');
         }
     }
 });
