@@ -77,6 +77,14 @@ Template.ifNoChangesCategory.isPresent = function () {
     }
 };
 
+Template.ifDependentBookings.isPresent = function () {
+    if (Session.get('dependentBookingsAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 Template.ifDeleteCategory.isPresent = function () {
     if (Session.get('categoryDeletedAlert')) {
         return true;

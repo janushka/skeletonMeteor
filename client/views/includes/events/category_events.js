@@ -69,9 +69,9 @@ Template.CategoryEdit.events({
         // Session variable will be checked on true in "ifEditCategory"-Template.
         Session.set('categoryUpdatedAlert', true);
 
-        console.log("You just updated a category.")
-
+        console.log("You just updated a category.");
     },
+
     'click #delete_category': function (event, template) {
         event.preventDefault();
 
@@ -98,49 +98,12 @@ Template.CategoryEdit.events({
 
         console.log("You just deleted a category.");
     },
+
     'focus': function (event, template) {
         event.preventDefault();
         // Session variable will be checked on false once a field gains focus.
         Session.set('categoryNoChangesAlert', false);
         Session.set('categoryUpdatedAlert', false);
-    }
-});
-
-Template.successNewCategoryAlert.events({
-    'focus': function (event, template) {
-        event.preventDefault();
-        // Session variable will be checked on false once a field gains focus.
-        Session.set('categoryAddedAlert', false);
-    }
-});
-
-Template.successEditCategoryAlert.events({
-    'focus': function (event, template) {
-        event.preventDefault();
-        // Session variable will be checked on false once a field gains focus.
-        Session.set('categoryUpdatedAlert', false);
-    }
-});
-
-Template.successDeleteCategoryAlert.events({
-    'click #close_acknowledge_delete_category': function (event, template) {
-        event.preventDefault();
-        Session.set('categoryDeletedAlert', false);
-        Router.go('/new_booking');
-    }
-});
-
-Template.noChangesInCategoryAlert.events({
-    'click #close_acknowledge_nochanges_category': function (event, template) {
-        event.preventDefault();
-        Session.set('categoryNoChangesAlert', false)
-    }
-})
-
-
-Template.dependentBookingsAlert.events({
-    'click #close_acknowledge_dependent_bookings_category': function (event, template) {
-        event.preventDefault();
         Session.set('dependentBookingsAlert', false);
     }
 });

@@ -89,7 +89,7 @@ Router.route('booking_edit', {
 });
 
 Router.route('category_edit', {
-    path: '/category_edit',
+    path: '/category_edit/:_id',
     controller: 'CategoryEditController'
 
 });
@@ -217,7 +217,8 @@ CategoryEditController = RouteController.extend({
         return [Meteor.subscribe('bookings'), Meteor.subscribe('categories')];
     },
     data: function () {
-        var templateData = {category: Categories.findOne({name: Session.get('selectedCategory')})};
+        var templateData = {category: Categories.findOne(this.params._id)};
+        //var templateData = {category: Categories.findOne({name: Session.get('selectedCategory')})};
         return templateData;
     },
     onBeforeAction: function () {

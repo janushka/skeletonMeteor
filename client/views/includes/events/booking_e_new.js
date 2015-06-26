@@ -37,6 +37,8 @@ Template.BookingNew.events({
     'click #edit_category': function (event, template) {
         var category = template.find('#new_booking_category').value;
         Session.set('selectedCategory', category);
+
+
     },
 
     'focus': function (event, template) {
