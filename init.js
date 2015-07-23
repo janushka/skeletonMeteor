@@ -4,7 +4,7 @@
 
 Bookings = new Meteor.Collection("bookings");
 Categories = new Meteor.Collection("categories");
-CategoriesAmounts = new Meteor.Collection("categoriesAmounts");
+Amounts = new Meteor.Collection("amounts");
 
 
 if (Meteor.isClient) {
@@ -12,13 +12,16 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-    Meteor.publish("categories", function () {
-        return Categories.find();
-    });
-
     Meteor.publish("bookings", function () {
         return Bookings.find();
     });
+    Meteor.publish("categories", function () {
+        return Categories.find();
+    });
+    Meteor.publish("amounts", function () {
+        return Amounts.find();
+    });
+
 
     Meteor.publish('limitedBookings', function (options) {
         check(options, {
@@ -31,7 +34,7 @@ if (Meteor.isServer) {
     });
 
     Categories._ensureIndex({name: 1}, {unique: true});
-    CategoriesAmounts._ensureIndex({category: 1}, {unique: true});
+    Amounts._ensureIndex({category: 1}, {unique: true});
 }
 
 //Meteor.AppCache.config({onlineOnly: ['/fonts/']});

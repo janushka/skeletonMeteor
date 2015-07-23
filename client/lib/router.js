@@ -89,8 +89,15 @@ Router.route('booking_edit', {
 });
 
 Router.route('category_edit', {
-    path: '/category_edit/:_id',
+    path: '/category_edit/:_id?',
+    //path: '/category_edit',
     controller: 'CategoryEditController'
+
+});
+
+Router.route('statistic', {
+    path: '/statistic',
+    controller: 'StatisticController'
 
 });
 
@@ -237,6 +244,32 @@ CategoryEditController = RouteController.extend({
             this.render('CategoryEdit', {to: 'content'});
             //Session.set('editCategory', this.params.category);
             console.log('Template Edit-Category can be rendered!');
+        }
+    }
+});
+
+StatisticController = RouteController.extend({
+    waitOn: function () {
+        return [Meteor.subscribe('amounts'), Meteor.subscribe('categories')];
+    },
+    data: function () {
+        templateData = {amounts: Amounts.find(), categories: Categories.find()};
+        return templateData;
+    },
+    onBeforeAction: function () {
+        if (!Meteor.userId()) {
+            Router.go('home');
+        } else {
+            // otherwise don't hold up the rest of hooks or our route/action function
+            // from running
+            this.next();
+        }
+    },
+    action: function () {
+        if (this.ready()) {
+            this.render('ContentHeader', {to: 'header'});
+            this.render('Navigation', {to: 'navigation'});
+            this.render('Statistic', {to: 'content'});
         }
     }
 });

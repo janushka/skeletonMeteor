@@ -10,6 +10,12 @@ Template.BookingNew.rendered = function () {
             console.log(this.getMoment().format('DD.MM.YYYY'));
         }
     });
+
+    var preselectedCategory = this.find('#new_booking_category').value;
+    Session.set('selectedCategory', preselectedCategory);
+
+    Session.set('categoryExistingAlert', false);
+    Session.set('categoryAddedAlert', false);
 };
 
 // If no category(ies) present, then disable booking-button and input-fields.
@@ -30,6 +36,12 @@ Template.BookingNew.helpers({
             return '';
         } else {
             return 'disabled';
+        }
+    },
+    currentCategory: function () {
+        if (Session.get('selectedCategory')) {
+            var selectedCategory = Categories.findOne({'name': Session.get('selectedCategory')});
+            return selectedCategory;
         }
     }
 });

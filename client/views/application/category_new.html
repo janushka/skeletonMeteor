@@ -14,21 +14,23 @@
                         <div class="six columns">
                             <label for="new_category_name">Name</label>
                             <input type="text" name="name" id="new_category_name"
-                                   class="u-full-width" {{disabledProperty}}/>
+                                   class="u-full-width"/>
                         </div>
                         <div class="six columns">
                             <label for="new_category_description">Beschreibung</label>
                             <textarea rows="2" cols="40" name="description" id="new_category_description"
-                                      class="u-full-width" {{disabledProperty}}></textarea>
+                                      class="u-full-width"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <a id="submit_category"
-                           class="button" {{ categoryButtonDisabled }} {{disabledProperty}}>speichern</a>
+                        <a id="submit_category" class="button">speichern</a>
                     </div>
                     {{#ifNewCategory}}
                         {{> successNewCategoryAlert }}
                     {{/ifNewCategory}}
+                    {{#ifExistingCategory}}
+                        {{> existingCategoryAlert }}
+                    {{/ifExistingCategory}}
                 </form>
             </div>
         </div>
@@ -43,10 +45,24 @@
     {{/if}}
 </template>
 
+<template name="ifExistingCategory">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
 <template name="successNewCategoryAlert">
     <div class="row">
         <div class="twelve columns signin-prop notification">
             <strong><p><b>Bestätigung:</b> Kategorie erfolgreich gespeichert.</p></strong>
+        </div>
+    </div>
+</template>
+
+<template name="existingCategoryAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Fehler:</b> Kategorie existiert bereits.</p></strong>
         </div>
     </div>
 </template>

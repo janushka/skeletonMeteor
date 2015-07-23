@@ -1,6 +1,6 @@
-<template name="BookingNew">
+<template name="Statistic">
     <div class="docs-section">
-        <h6 class="docs-header">Neue Buchung</h6>
+        <h6 class="docs-header">Statistik</h6>
 
         <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
             Tag, Woche, Monat und Jahr aufgerufen werden.
@@ -11,48 +11,29 @@
             <div class="twelve columns">
                 <form id="new_booking">
                     <div class="row">
-                        <div class="six columns">
-                            <label for="new_booking_datum">Datum</label>
-                            <input type="text" name="date" id="new_booking_datum"
+                        <div class="one-third column">
+                            <label for="statistic_von_datum">Von</label>
+                            <input type="text" name="statistic_von_datum" id="statistic_von_datum"
                                    class="u-full-width" {{disabledProperty}}/>
                         </div>
-                        <div class="six columns">
-                            <label for="new_booking_amount">Betrag (€)</label>
-                            <input type="text" name="amount" id="new_booking_amount"
+                        <div class="one-third column">
+                            <label for="statistic_bis_datum">Bis</label>
+                            <input type="text" name="statistic_bis_datum" id="statistic_bis_datum"
                                    class="u-full-width"  {{disabledProperty}}>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="six columns">
-                            <label for="new_booking_category">Kategorie</label>
-
-                            <select name="category" id="new_booking_category" class="u-full-width" {{disabledProperty}}>
+                        <div class="one-third column">
+                            <label for="statistic_category">Kategorie</label>
+                            <select name="category" id="statistic_category" class="u-full-width" {{disabledProperty}}>
+                                <option value="all">-- Alle --</option>
                                 {{#each categories}}
                                     <option value={{ name }}>{{ name }}</option>
                                 {{/each}}
                             </select>
-
-                            <p><a href="{{pathFor 'category_new'}}">neue Kategorie</a>
-                                {{#ifCategoriesLink}}
-                                    {{#with currentCategory}}
-                                        <a id="edit_category" style="padding-left:2em;" href="{{pathFor 'category_edit'}}">Kategorie
-                                            ändern</a>
-                                    {{/with}}
-                                {{ else }}
-                                    <span style="padding-left:2em;">Kategorie ändern</span>
-                                {{/ifCategoriesLink}}
-                            </p>
-                        </div>
-                        <div class="six columns">
-                            <label for="new_booking_remark">Anmerkung</label>
-                            <textarea rows="2" cols="20" name="remark"
-                                      id="new_booking_remark" class="u-full-width" {{disabledProperty}}></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <a id="submit_booking"
-                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>buchen</a>
+                        <a id="statistic_search"
+                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>suchen</a>
                     </div>
                     {{#ifCategoriesAlert}}
                         {{> noCategoriesAlert }}
@@ -65,7 +46,33 @@
             </div>
         </div>
 
-
+        <div class="row">
+            <div class="twelve columns">
+                <table id="statistic_list" class="u-full-width">
+                    <thead class="slab-700">
+                    <tr>
+                        <th class="align-left">Kategorie</th>
+                        <th class="align-left">Summe (€)</th>
+                        <th class="align-left">Gesamt</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each categories}}
+                        <tr>
+                            <td>{{ name }}</td>
+                            <td>{{ accumulatedAmount }}</td>
+                            <td></td>
+                        </tr>
+                    {{/each}}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{ total }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </template>
 

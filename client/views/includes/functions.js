@@ -18,6 +18,14 @@ Template.ifEditBooking.isPresent = function () {
     }
 };
 
+Template.ifErrorEditBooking.isPresent = function () {
+    if (Session.get('bookingUpdatingErrorAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 Template.ifNoChangesBooking.isPresent = function () {
     if (Session.get('bookingNoChangesAlert')) {
         return true;
@@ -34,8 +42,24 @@ Template.ifDeleteBooking.isPresent = function () {
     }
 };
 
-Template.ifNewCategory.isPresent = function () {
+Template.ifErrorDeleteBooking.isPresent = function () {
+    if (Session.get('bookingDeletedErrorAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+/*Template.ifNewCategory.isPresent = function () {
     if (Session.get('categoryAddedAlert')) {
+        return true;
+    } else {
+        return false;
+    }
+};*/
+
+Template.ifExistingCategory.isPresent = function () {
+    if (Session.get('categoryExistingAlert')) {
         return true;
     } else {
         return false;

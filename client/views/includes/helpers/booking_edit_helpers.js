@@ -15,5 +15,22 @@ Template.BookingEdit.rendered = function () {
 Template.BookingEdit.helpers({
     datum: function() {
         return moment(this.datum).format('DD.MM.YYYY');
-    }
+    },
+
+    disabledProperty: function () {
+        if (Session.get('bookingDeletedAlert')) {
+            return '';
+        } else {
+            return '';
+        }
+    },
+
+    selectedProperty: function () {
+        var self = this;
+        if (_.isEqual(Session.get('editBookingCategory'), self.name)) {
+            return 'selected';
+        } else {
+            return '';
+        }
+    },
 });

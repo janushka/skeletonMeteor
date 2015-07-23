@@ -14,7 +14,8 @@
                         <div class="six columns">
                             <label for="edit_category_name">Name</label>
                             <input type="text" name="name" id="edit_category_name"
-                                   class="u-full-width" {{disabledProperty}} value="{{#with category}}{{name}}{{/with}}"/>
+                                   class="u-full-width" {{disabledProperty}}
+                                   value="{{#with category}}{{name}}{{/with}}"/>
                         </div>
                         <div class=" six columns">
                             <label for="edit_category_description">Beschreibung</label>
@@ -34,6 +35,9 @@
                     {{#ifNoChangesCategory}}
                         {{> noChangesInCategoryAlert }}
                     {{/ifNoChangesCategory}}
+                    {{#ifExistingCategory}}
+                        {{> existingCategoryAlert }}
+                    {{/ifExistingCategory}}
                     {{#ifDeleteCategory}}
                         {{> successDeleteCategoryAlert }}
                     {{/ifDeleteCategory}}
@@ -55,6 +59,12 @@
 </template>
 
 <template name="ifNoChangesCategory">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
+<template name="ifExistingCategory">
     {{#if isPresent}}
         {{> UI.contentBlock}}
     {{/if}}
@@ -84,6 +94,14 @@
     <div class="row">
         <div class="twelve columns signin-prop notification">
             <strong><p><b>Warnung:</b> Keine Änderungen festgestellt. Speichern abgebrochen!</p></strong>
+        </div>
+    </div>
+</template>
+
+<template name="existingCategoryAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Fehler:</b> Kategorie existiert bereits.</p></strong>
         </div>
     </div>
 </template>

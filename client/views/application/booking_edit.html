@@ -41,28 +41,38 @@
                     </div>
                     <div class="row">
                         <a id="save_booking"
-                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>speichern</a>
+                           class="button" {{disabledProperty}}>speichern</a>
                         <a id="delete_booking"
-                        class="button" {{ savingAndDeleteButtonDisabled }} {{disabledProperty}}>endgültig löschen</a>
+                        class="button" {{disabledProperty}}>endgültig löschen</a>
                     </div>
                     {{#ifEditBooking}}
                         {{> successEditBookingAlert }}
                     {{/ifEditBooking}}
+                    {{#ifErrorEditBooking}}
+                        {{> errorEditBookingAlert }}
+                    {{/ifErrorEditBooking}}
                     {{#ifNoChangesBooking}}
                         {{> noChangesInBookingAlert }}
                     {{/ifNoChangesBooking}}
                     {{#ifDeleteBooking}}
                         {{> successDeleteBookingAlert }}
                     {{/ifDeleteBooking}}
+                    {{#ifErrorDeleteBooking}}
+                        {{> errorDeleteBookingAlert }}
+                    {{/ifErrorDeleteBooking}}
                 </form>
             </div>
         </div>
-
-
     </div>
 </template>
 
 <template name="ifEditBooking">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
+<template name="ifErrorEditBooking">
     {{#if isPresent}}
         {{> UI.contentBlock}}
     {{/if}}
@@ -80,10 +90,24 @@
     {{/if}}
 </template>
 
+<template name="ifErrorDeleteBooking">
+    {{#if isPresent}}
+        {{> UI.contentBlock}}
+    {{/if}}
+</template>
+
 <template name="successEditBookingAlert">
     <div class="row">
         <div class="twelve columns signin-prop notification">
             <strong><p><b>Bestätigung:</b> Buchung erfolgreich geändert.</p></strong>
+        </div>
+    </div>
+</template>
+
+<template name="errorEditBookingAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Fehler:</b> Buchung nicht ändernbar.</p></strong>
         </div>
     </div>
 </template>
@@ -100,6 +124,14 @@
     <div class="row">
         <div class="twelve columns signin-prop notification">
             <strong><p><b>Bestätigung:</b> Buchung erfolgreich gelöscht.</p></strong>
+        </div>
+    </div>
+</template>
+
+<template name="errorDeleteBookingAlert">
+    <div class="row">
+        <div class="twelve columns signin-prop notification">
+            <strong><p><b>Fehler:</b> Buchung nicht löschbar.</p></strong>
         </div>
     </div>
 </template>

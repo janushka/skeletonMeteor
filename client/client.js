@@ -13,20 +13,15 @@ Meteor.startup(function () {
         // at this point all new bookings sent down are legitimately new ones
         bookingsLoaded = true;
     });
-
-    var categoryCursor = Categories.find();
-    var bookingsCursor = Bookings.find();
-
-    var categoriesHandle = categoryCursor.observe({
-        added: function (category) {
-            if (categoriesLoaded) {
-                console.log("A new Category has been added: " + category.name);
-            }
-        },
-        removed: function (document) {
-            console.log("A Category has been removed.");
-        }
+    var amountsLoaded = false;
+    Meteor.subscribe("amounts", function () {
+        // at this point all new bookings sent down are legitimately new ones
+        amountsLoaded = true;
     });
+
+    var bookingsCursor = Bookings.find();
+    var categoryCursor = Categories.find();
+    var amountCursor = Amounts.find();
 
     var bookingsHandle = bookingsCursor.observe({
         added: function (booking) {
@@ -42,4 +37,27 @@ Meteor.startup(function () {
             console.log("A Booking has been removed.");
         }
     });
+
+    var categoriesHandle = categoryCursor.observe({
+        added: function (category) {
+            if (categoriesLoaded) {
+                console.log("A new Category has been added: " + category.name);
+            }
+        },
+        removed: function (document) {
+            console.log("A Category has been removed.");
+        }
+    });
+
+    var amountsHandle = amountCursor.observe({
+        added: function (amount) {
+            if (amountsLoaded) {
+                console.log("A new amount " + amount.amount + " for category " + amount.category + "has been added.");
+            }
+        },
+        removed: function (document) {
+            console.log("A category and it's amount has been removed.");
+        }
+    });
+
 });
