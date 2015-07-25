@@ -14,7 +14,9 @@ Template.Statistic.events({
             Session.set('dateOutOfRange', false);
             Session.set('timeSpecialRange', [bDv.toDate(), eDv.toDate()]);
             //ToDo
-            ManipulateCategoriesAmounts.updateCategoriesByRange([bDv, eDv]);
+            Categories.find({name: currentCategory}).fetch();
+            ManipulateCategoriesAmounts.searchCategoriesAmounts(currentCategory, 'all');
+            //ManipulateCategoriesAmounts.updateCategoriesByRange(currentCategory, [bDv, eDv]);
         } else {
             Session.set('dateOutOfRange', true);
         }

@@ -28,6 +28,7 @@ Template.BookingNew.events({
                 console.log('Success when inserting booking with ID = ' + id);
                 // Update CategoriesAmount-Collection immediately.
                 ManipulateCategoriesAmounts.updateCategoriesByRange(Session.get('timeRange'));
+                //ManipulateCategoriesAmounts.updateCategoriesByRange('all');
                 // Session variable will be checked on true in "ifNewBooking"-Template.
                 Session.set('bookingAddedAlert', true);
                 // Reset all input-fields

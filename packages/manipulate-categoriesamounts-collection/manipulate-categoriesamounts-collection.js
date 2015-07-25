@@ -371,7 +371,71 @@ ManipulateCategoriesAmounts = {
 
         bookingsCount = Bookings.find({}).count();
         return bookingsCount;
-    }
+    },
+
+    searchCategoriesAmounts: function (categories, range) {
+        var bookingsList = [];
+        var categoriesList = Categories.find({name: categories[0]}).fetch();
+        var begin;
+
+        if (Array.isArray(range)) {
+            begin = moment(range[0], 'DD-MM-YYYY').toDate();
+            var end = moment(range[1], 'DD-MM-YYYY').toDate();
+            bookingsList = Bookings.find({datum: {$gte: begin, $lte: end}}).fetch();
+        } else if ((typeof range) === 'string') {
+            switch (range) {
+                case 'none':
+                    break;
+                case 'day':
+                    begin = moment().startOf('day').toDate();
+                    bookingsList = Bookings.find({datum: {$gte: begin}}).fetch();
+                    break;
+                case 'week':
+                    begin = moment().startOf('week').toDate();
+                    bookingsList = Bookings.find({datum: {$gte: begin}}).fetch();
+                    break;
+                case 'month':
+                    begin = moment().startOf('month').toDate();
+                    bookingsList = Bookings.find({datum: {$gte: begin}}).fetch();
+                    break;
+                case 'year':
+                    begin = moment().startOf('year').toDate();
+                    bookingsList = Bookings.find({datum: {$gte: begin}}).fetch();
+                    break;
+                case 'all':
+                    bookingsList = Bookings.find().fetch();
+                    break;
+                default:
+                    bookingsList = Bookings.find().fetch();
+                    break;
+            }
+        } else {
+            throw 'This type of range-input is forbidden!'
+        }
+
+        var groupedBookings = _.groupBy(bookingsList, function (booking) {
+            return booking.category;
+        });
+
+        // Bookings must exist in order to display any amount related statistics greater than 0.
+        if (_.isEmpty(groupedBookings)) {
+            _.each(categoriesList, function (element, index, list) {
+                Categories.update({_id: element._id}, {$set: {accumulatedAmount: 0}});
+            });
+        } else {
+            _.each(bookingsList, function (element, index, list) {
+                var accAmount = _.reduce(_.pluck(groupedBookings[element.category], 'amount'), function (memo, num) {
+                    return memo + num;
+                }, 0);
+
+                Categories.update({_id: element.categoryId}, {$set: {accumulatedAmount: parseFloat(accAmount.toFixed(2))}});
+            });
+            var diffList = _.difference(_.pluck(categoriesList, '_id'), _.pluck(bookingsList, 'categoryId'));
+            _.each(diffList, function (element, index, list) {
+                Categories.update({_id: element}, {$set: {accumulatedAmount: 0}});
+            });
+        }
+    },
 
 };
 
