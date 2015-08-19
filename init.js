@@ -6,18 +6,36 @@ Bookings = new Meteor.Collection("bookings");
 Categories = new Meteor.Collection("categories");
 Amounts = new Meteor.Collection("amounts");
 
+Authors = new Meteor.Collection("authors");
+
 
 if (Meteor.isClient) {
     console.log('In the Client!');
 }
 
 if (Meteor.isServer) {
+    Meteor.publish("authors", function () {
+        return Authors.find();
+    });
+
     Meteor.publish("bookings", function () {
         return Bookings.find();
     });
+
     Meteor.publish("categories", function () {
         return Categories.find();
     });
+
+    Meteor.publish('limitedCategories', function (categoriesNames) {
+        var params = [];
+        for (var i = 0; i < categoriesNames.length; i++) {
+            params.push({name: categoriesNames[i]});
+        }
+        var categories = Categories.find({$or: params});
+
+        return categories;
+    });
+
     Meteor.publish("amounts", function () {
         return Amounts.find();
     });

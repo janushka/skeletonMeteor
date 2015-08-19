@@ -8,14 +8,20 @@ Template.Statistic.events({
 
         var bDv = moment(template.find('#statistic_von_datum').value, 'DD-MM-YYYY');
         var eDv = moment(template.find('#statistic_bis_datum').value, 'DD-MM-YYYY');
-        var currentCategory = template.find('#statistic_category').value
+        var currentCategory = template.find('#statistic_category').value;
+
 
         if (moment(bDv).isBefore(eDv)) {
             Session.set('dateOutOfRange', false);
             Session.set('timeSpecialRange', [bDv.toDate(), eDv.toDate()]);
             //ToDo
-            Categories.find({name: currentCategory}).fetch();
-            ManipulateCategoriesAmounts.searchCategoriesAmounts(currentCategory, 'all');
+            //Categories.find({name: currentCategory}).fetch();
+            var names = currentCategory;
+
+            Session.set('someCategories', names);
+
+            //ManipulateCategoriesAmounts.searchCategoriesAmounts(currentCategory, [bDv, eDv]);
+            //ManipulateCategoriesAmounts.searchCategoriesAmounts(currentCategory, 'all');
             //ManipulateCategoriesAmounts.updateCategoriesByRange(currentCategory, [bDv, eDv]);
         } else {
             Session.set('dateOutOfRange', true);
@@ -24,9 +30,63 @@ Template.Statistic.events({
 
     'change select': function (event, template) {
         event.preventDefault();
-        var category = template.find('#statistic_category').value;
-        console.log('The new selected category is = ' + category);
-        Session.set('selectedCategory', category);
+
+        var query_parameters = [];
+        var beginDate = template.find('#statistic_von_datum').value;
+        var endDate = template.find('#statistic_bis_datum').value;
+        var category_name = template.find('#statistic_category').value;
+
+        query_parameters.push(beginDate, endDate, category_name);
+
+        Meteor.apply('getSomeCategoriesByNameAndRange', [query_parameters], function (error, categories) {
+            if (error) {
+                console.log('An error occured: ' + error.reason);
+                return error.reason;
+            }
+            console.log('Some categories are ' + categories.length);
+            Session.set('selectedCategories', categories);
+        });
+
+        var bDv = moment(beginDate, 'DD-MM-YYYY');
+        var eDv = moment(endDate, 'DD-MM-YYYY');
+        var currentCategory = template.find('#statistic_category').value;
+
+
+        if (moment(bDv).isBefore(eDv)) {
+            Session.set('dateOutOfRange', false);
+            Session.set('timeSpecialRange', [bDv.toDate(), eDv.toDate()]);
+            //ToDo
+            //Categories.find({name: currentCategory}).fetch();
+            var names = currentCategory;
+
+            Session.set('someCategories', names);
+
+            //ManipulateCategoriesAmounts.searchCategoriesAmounts(currentCategory, [bDv, eDv]);
+            //ManipulateCategoriesAmounts.searchCategoriesAmounts(currentCategory, 'all');
+            //ManipulateCategoriesAmounts.updateCategoriesByRange(currentCategory, [bDv, eDv]);
+        } else {
+            Session.set('dateOutOfRange', true);
+        }
+
+
+        //var category_name = template.find('#statistic_category').value;
+        //console.log('The new selected category is = ' + category_name);
+
+        //var names = category;
+        //Session.set('oneCategory', category);
+
+        //var name = Session.get('oneCategory');
+        /*Meteor.call('getOneCategory', category_name, function (error, category) {
+         if (error) {
+         console.log('An error occured: ' + error.reason);
+         return error.reason;
+         }
+         console.log('One category is ' + category.name);
+         Session.set('oneCategory', category);
+         });*/
+
+
+        //Session.set('selectedCategory', category_name);
     },
 
     'focus': function (event, template) {

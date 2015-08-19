@@ -24,11 +24,21 @@ Template.Statistic.rendered = function () {
 };
 
 Template.Statistic.helpers({
+    OneCategory: function() {
+        var selected_category = Session.get('oneCategory');
+        return selected_category;
+    },
+
+    Categories: function() {
+        var selected_categories = Session.get('selectedCategories');
+        return selected_categories;
+    },
+
     total: function () {
         /*var amountList = Amounts.find({}).fetch();
-        var totalAmount = _.reduce(_.pluck(amountList, 'amount'), function (memo, num) {
-            return memo + num;
-        }, 0);*/
+         var totalAmount = _.reduce(_.pluck(amountList, 'amount'), function (memo, num) {
+         return memo + num;
+         }, 0);*/
 
         var categoriesList = Categories.find().fetch();
         var totalAmount = _.reduce(_.pluck(categoriesList, 'accumulatedAmount'), function (memo, num) {

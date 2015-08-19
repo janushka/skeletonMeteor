@@ -98,7 +98,40 @@ Router.route('category_edit', {
 Router.route('statistic', {
     path: '/statistic',
     controller: 'StatisticController'
+});
 
+Router.route("test", {
+    path: "/test",
+
+    waitOn: function () {
+        return Meteor.subscribe('authors');
+    },
+    data: function () {
+        templateData = {authors: Authors.find().fetch()};
+        return templateData;
+    },
+    action: function () {
+        console.log("The data is ", this.data().authors);
+    },
+    onAfterAction: function () {
+        Meteor.call('getSomeAuthors', 'Janne', function (error, result) {
+            console.log("The result is ", result);
+        });
+    }
+
+ //   data: function() {
+        //console.log("The DATA is ", Util.getResponse("getSomeAuthors")[0]);
+
+    //},
+    //action: function () {
+        //console.log("The data is ", Util.getResponse("getSomeAuthors")[0]);
+      //  this.data();
+    //},
+    //waitOn: function () {
+        // Call the async function, with an optional data argument
+      //  return Util.waitOnServer("getSomeAuthors", {name: 'Janne'});
+        //return Util.waitOnServer("testWaitOn", {foo: "bar"}, {bar: "foo"}, {name: 'Janne'});
+    //}
 });
 
 // CONTROLLERS
@@ -112,13 +145,17 @@ BookingsListController = RouteController.extend({
         return {sort: {datum: -1}, limit: this.bookingsLimit()};
     },
     waitOn: function () {
+        //return [Util.waitOnServer("getLimitedBookings", this.findOptions()), Util.waitOnServer("getAllCategories")];
         return [Meteor.subscribe('limitedBookings', this.findOptions()), Meteor.subscribe('categories')];
     },
     bookings: function () {
+        //return Util.getResponse("getLimitedBookings", this.findOptions());
         return Bookings.find({}, this.findOptions());
     },
     data: function () {
+        var tempBooks = this.bookings();
         var hasMore = this.bookings().count() === this.bookingsLimit();
+        //var hasMore = this.bookings().count() === this.bookingsLimit();
         var nextPath = this.route.path({bookingsLimit: this.bookingsLimit() + this.increment});
         return {bookings: this.bookings(), categories: Categories.find(), nextPath: hasMore ? nextPath : null};
     },
