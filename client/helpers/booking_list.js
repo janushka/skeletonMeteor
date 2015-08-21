@@ -2,25 +2,13 @@
  * Created by Njoku on 16.06.2015.
  */
 
+Template.BookingList.onCreated(function() {
+    Meteor.subscribe("bookings");
+});
+
 Template.BookingList.helpers({
     bookings: function () {
-        var cat = Session.get('bookingListByCategory');
-        var tR;
-        Session.get('timeSpecialRange') === undefined ? tR = Session.get('timeRange') : tR = Session.get('timeSpecialRange');
-        var results = ManipulateCategoriesAmounts.getBookingList(cat, tR);
-
-        var bookingsCountWithNoLimit = ManipulateCategoriesAmounts.getBookingsCount(cat, tR);
-        //var bookingsCountWithNoLimit = Bookings.find().count();
-
-        console.log('Length of array results: ' + bookingsCountWithNoLimit);
-        console.log('Value of Session-variable bookingsLimit: ' + Session.get('bookingsLimit'));
-
-        if (Session.get('bookingsLimit') < bookingsCountWithNoLimit) {
-            Session.set('loadMoreBookings', true);
-        } else {
-            Session.set('loadMoreBookings', false);
-        }
-
+        var results = Bookings.find();
         return results;
     },
     datum: function () {

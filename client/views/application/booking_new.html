@@ -14,12 +14,12 @@
                         <div class="six columns">
                             <label for="new_booking_datum">Datum</label>
                             <input type="text" name="date" id="new_booking_datum"
-                                   class="u-full-width" {{disabledProperty}}/>
+                                   class="u-full-width"/>
                         </div>
                         <div class="six columns">
                             <label for="new_booking_amount">Betrag (€)</label>
                             <input type="text" name="amount" id="new_booking_amount"
-                                   class="u-full-width"  {{disabledProperty}}>
+                                   class="u-full-width">
                         </div>
                     </div>
 
@@ -27,16 +27,17 @@
                         <div class="six columns">
                             <label for="new_booking_category">Kategorie</label>
 
-                            <select name="category" id="new_booking_category" class="u-full-width" {{disabledProperty}}>
-                                {{#each categories}}
-                                    <option value={{ name }}>{{ name }}</option>
+                            <select name="category" id="new_booking_category" class="u-full-width">
+                                {{#each categoryId}}
+                                    <option value="{{_id}}" {{isSelected}}>{{name}}</option>
                                 {{/each}}
                             </select>
 
                             <p><a href="{{pathFor 'category_new'}}">neue Kategorie</a>
                                 {{#ifCategoriesLink}}
                                     {{#with currentCategory}}
-                                        <a id="edit_category" style="padding-left:2em;" href="{{pathFor 'category_edit'}}">Kategorie
+                                        <a id="edit_category" style="padding-left:2em;"
+                                           href="{{pathFor 'category_edit'}}">Kategorie
                                             ändern</a>
                                     {{/with}}
                                 {{ else }}
@@ -47,26 +48,39 @@
                         <div class="six columns">
                             <label for="new_booking_remark">Anmerkung</label>
                             <textarea rows="2" cols="20" name="remark"
-                                      id="new_booking_remark" class="u-full-width" {{disabledProperty}}></textarea>
+                                      id="new_booking_remark" class="u-full-width"></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <a id="submit_booking"
-                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>buchen</a>
+                           class="button">buchen</a>
                     </div>
-                    {{#ifCategoriesAlert}}
+
+                    {{> notificationAreaBookingNew }}
+
+                    <!--{{#ifCategoriesAlert}}
                         {{> noCategoriesAlert }}
                     {{else}}
                     {{/ifCategoriesAlert}}
-                    {{#ifNewBooking}}
-                        {{> successBookingAlert }}
-                    {{/ifNewBooking}}
+                        {{#ifNewBooking}}
+                            {{> successBookingAlert }}
+                        {{/ifNewBooking}}-->
                 </form>
             </div>
         </div>
 
 
     </div>
+</template>
+
+<template name="notificationAreaBookingNew">
+    {{#if isConcerned "booking_new"}}
+        <div class="row">
+            <div class="twelve columns signin-prop notification">
+                <strong><p><b>{{notification.type}}</b>{{notification.text}}</p></strong>
+            </div>
+        </div>
+    {{/if}}
 </template>
 
 <template name="ifCategoriesAlert">

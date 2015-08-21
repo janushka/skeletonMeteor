@@ -1,3 +1,7 @@
+Template.CategoryNew.onCreated(function () {
+    Session.set('notification', undefined);
+});
+
 Template.CategoryNew.rendered = function () {
     //Session.set('categoryExistingAlert', false);
     //Session.set('categoryAddedAlert', false);
@@ -13,6 +17,16 @@ Template.CategoryNew.helpers({
             return '';
         }
     },
+
+    categoryId: function () {
+        return Categories.find({}, {
+            fields: {
+                name: 1,
+                _id: 1
+            }
+        });
+    },
+
     savingCategoryButtonDisabled: function () {
         if (Session.get('categoryNameValid')) {
             return '';

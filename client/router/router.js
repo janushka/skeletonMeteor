@@ -62,11 +62,11 @@ Router.map(function () {
 
      });*/
 
-    this.route('booking_new', {
+    /*this.route('booking_new', {
         path: '/booking_new',
         controller: 'BookingNewController'
 
-    });
+    });*/
 
     this.route('category_new', {
         path: '/category_new',
@@ -79,6 +79,11 @@ Router.route('booking_list', {
     path: '/booking_list/:bookingsLimit?',
     controller: 'BookingsListController',
     template: 'BookingList',
+});
+
+Router.route('booking_new', {
+    path: '/booking_new',
+    controller: 'BookingNewController'
 });
 
 Router.route('booking_edit', {
@@ -138,26 +143,28 @@ Router.route("test", {
 
 BookingsListController = RouteController.extend({
     increment: 5,
-    bookingsLimit: function () {
+    /*bookingsLimit: function () {
         return parseInt(this.params.bookingsLimit) || this.increment;
-    },
+    },*/
     findOptions: function () {
-        return {sort: {datum: -1}, limit: this.bookingsLimit()};
+        return {sort: {datum: -1}, limit: 10};
+        //return {sort: {datum: -1}, limit: this.bookingsLimit()};
     },
     waitOn: function () {
         //return [Util.waitOnServer("getLimitedBookings", this.findOptions()), Util.waitOnServer("getAllCategories")];
-        return [Meteor.subscribe('limitedBookings', this.findOptions()), Meteor.subscribe('categories')];
+        //return Meteor.subscribe('limitedBookings', this.findOptions());
+        return Meteor.subscribe('bookings', this.findOptions());
     },
-    bookings: function () {
-        //return Util.getResponse("getLimitedBookings", this.findOptions());
+    /*bookings: function () {
         return Bookings.find({}, this.findOptions());
-    },
+    },*/
     data: function () {
-        var tempBooks = this.bookings();
-        var hasMore = this.bookings().count() === this.bookingsLimit();
+        //return {bookings: Bookings.find({}, this.findOptions())};
+        //var tempBooks = this.bookings();
         //var hasMore = this.bookings().count() === this.bookingsLimit();
-        var nextPath = this.route.path({bookingsLimit: this.bookingsLimit() + this.increment});
-        return {bookings: this.bookings(), categories: Categories.find(), nextPath: hasMore ? nextPath : null};
+        //var hasMore = this.bookings().count() === this.bookingsLimit();
+        //var nextPath = this.route.path({bookingsLimit: this.bookingsLimit() + this.increment});
+        //return {bookings: this.bookings(), categories: Categories.find(), nextPath: hasMore ? nextPath : null};
     },
     onBeforeAction: function () {
         if (!Meteor.userId()) {
@@ -165,6 +172,7 @@ BookingsListController = RouteController.extend({
         } else {
             // otherwise don't hold up the rest of hooks or our route/action function
             // from running
+
             this.next();
         }
     },
@@ -176,8 +184,9 @@ BookingsListController = RouteController.extend({
 
             setTimeRangeInSession();
 
-            Session.set('bookingsLimit', this.bookingsLimit());
-            console.log('Template can be rendered!');
+            console.log('Template BookingsList can be rendered!');
+
+            //Session.set('bookingsLimit', this.bookingsLimit());
             //this.render();
         }
     }
@@ -186,10 +195,6 @@ BookingsListController = RouteController.extend({
 BookingNewController = RouteController.extend({
     waitOn: function () {
         return [Meteor.subscribe('bookings'), Meteor.subscribe('categories')];
-    },
-    data: function () {
-        templateData = {bookings: Bookings.find(), categories: Categories.find()};
-        return templateData;
     },
     onBeforeAction: function () {
         if (!Meteor.userId()) {
@@ -210,13 +215,6 @@ BookingNewController = RouteController.extend({
 });
 
 BookingEditController = RouteController.extend({
-    waitOn: function () {
-        return [Meteor.subscribe('bookings'), Meteor.subscribe('categories')];
-    },
-    data: function () {
-        templateData = {booking: Bookings.findOne(this.params._id), categories: Categories.find()};
-        return templateData;
-    },
     onBeforeAction: function () {
         if (!Meteor.userId()) {
             Router.go('home');
@@ -231,7 +229,7 @@ BookingEditController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('BookingEdit', {to: 'content'});
-            Session.set('editBookingCategory', this.params.category);
+            //Session.set('editBookingCategory', this.params.category);
             console.log('Template Edit-Booking can be rendered!');
         }
     }

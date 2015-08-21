@@ -3,7 +3,11 @@
  */
 
 Meteor.startup(function () {
-    var categoriesLoaded = false;
+    console.log('In the Startup-method!');
+
+    //var bookingsCursor = Bookings.find();
+
+    /*var categoriesLoaded = false;
     Meteor.subscribe("categories", function () {
         // at this point all new categories sent down are legitimately new ones
         categoriesLoaded = true;
@@ -58,6 +62,6 @@ Meteor.startup(function () {
         removed: function (document) {
             console.log("A category and it's amount has been removed.");
         }
-    });
+    });*/
 
 });
