@@ -19,6 +19,17 @@ Template.BookingNew.onCreated(function () {
 });
 
 Template.BookingNew.rendered = function () {
+    var preSelectedCategory = $('#new_booking_category').val();
+    if (preSelectedCategory != undefined) {
+        console.log('Pre-Selected CategoryId', preSelectedCategory);
+        Session.set('selectedCategoryId', {
+            caller_template: 'booking_new',
+            categoryId: preSelectedCategory
+        });
+    } else {
+        Session.set('selectedCategoryId', undefined);
+    }
+
     var picker = new Pikaday({
         field: document.getElementById('new_booking_datum'),
         format: 'DD.MM.YYYY',

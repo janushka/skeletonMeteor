@@ -9,6 +9,19 @@ Template.registerHelper('isConcerned', function (callerTemplate) {
     return false;
 });
 
+Template.registerHelper('isCategorySelected', function (callerTemplate) {
+    if (Session.get('selectedCategoryId') != undefined && Session.get('selectedCategoryId').caller_template == callerTemplate) {
+        return true;
+    }
+    return false;
+});
+
+Template.registerHelper('categorySelected', function (callerTemplate) {
+    if (Session.get('selectedCategoryId').caller_template == callerTemplate) {
+        return Categories.findOne({_id: Session.get('selectedCategoryId')});
+    }
+});
+
 Template.registerHelper('notification', function () {
     return Session.get('notification');
 });

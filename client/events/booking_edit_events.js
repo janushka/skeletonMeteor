@@ -72,7 +72,6 @@ Template.BookingEdit.events({
 
     'focus': function (event, template) {
         event.preventDefault();
-        // Session variables will be checked on false once a field gains focus.
         Session.set('notification', undefined);
     }
 });

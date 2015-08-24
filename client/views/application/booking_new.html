@@ -34,15 +34,12 @@
                             </select>
 
                             <p><a href="{{pathFor 'category_new'}}">neue Kategorie</a>
-                                {{#ifCategoriesLink}}
-                                    {{#with currentCategory}}
-                                        <a id="edit_category" style="padding-left:2em;"
-                                           href="{{pathFor 'category_edit'}}">Kategorie
-                                            ändern</a>
-                                    {{/with}}
+                                {{#if isCategorySelected "booking_new"}}
+                                    <a id="edit_category" style="padding-left:2em;"
+                                       href="{{pathFor 'category_edit'}}">Kategorie ändern</a>
                                 {{ else }}
                                     <span style="padding-left:2em;">Kategorie ändern</span>
-                                {{/ifCategoriesLink}}
+                                {{/if}}
                             </p>
                         </div>
                         <div class="six columns">

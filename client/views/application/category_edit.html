@@ -9,47 +9,66 @@
 
         <div class="row">
             <div class="twelve columns">
-                <form id="new_category">
-                    <div class="row">
-                        <div class="six columns">
-                            <label for="edit_category_name">Name</label>
-                            <input type="text" name="name" id="edit_category_name"
-                                   class="u-full-width" {{disabledProperty}}
-                                   value="{{#with category}}{{name}}{{/with}}"/>
-                        </div>
-                        <div class=" six columns">
-                            <label for="edit_category_description">Beschreibung</label>
+                {{#if category}}
+                    {{#with category}}
+                        <form id="new_category">
+                            <div class="row">
+                                <div class="six columns">
+                                    <label for="edit_category_name">Name</label>
+                                    <input type="text" name="name" id="edit_category_name"
+                                           class="u-full-width" {{disabledProperty}}
+                                           value="{{#with category}}{{name}}{{/with}}"/>
+                                </div>
+                                <div class=" six columns">
+                                    <label for="edit_category_description">Beschreibung</label>
                             <textarea rows="2" cols="40" name="description" id="edit_category_description"
                                       class="u-full-width" {{disabledProperty}}>{{#with category}}{{description}}{{/with}}</textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <a id="save_category"
-                           class="button" {{ savingAndDeleteButtonDisabled }} {{disabledProperty}}>speichern</a>
-                        <a id="delete_category"
-                           class="button" {{ savingAndDeleteButtonDisabled }} {{disabledProperty}}>endgültig löschen</a>
-                    </div>
-                    {{#ifEditCategory}}
-                        {{> successEditCategoryAlert }}
-                    {{/ifEditCategory}}
-                    {{#ifNoChangesCategory}}
-                        {{> noChangesInCategoryAlert }}
-                    {{/ifNoChangesCategory}}
-                    {{#ifExistingCategory}}
-                        {{> existingCategoryAlert }}
-                    {{/ifExistingCategory}}
-                    {{#ifDeleteCategory}}
-                        {{> successDeleteCategoryAlert }}
-                    {{/ifDeleteCategory}}
-                    {{#ifDependentBookings}}
-                        {{> dependentBookingsAlert }}
-                    {{/ifDependentBookings}}
-                </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <a id="save_category"
+                                   class="button" {{ savingAndDeleteButtonDisabled }} {{disabledProperty}}>speichern</a>
+                                <a id="delete_category"
+                                   class="button" {{ savingAndDeleteButtonDisabled }} {{disabledProperty}}>endgültig
+                                    löschen</a>
+                            </div>
+                            {{> notificationAreaCategoryEdit }}
+
+                            <!--{{#ifEditCategory}}
+                                {{> successEditCategoryAlert }}
+                            {{/ifEditCategory}}
+                            {{#ifNoChangesCategory}}
+                                {{> noChangesInCategoryAlert }}
+                            {{/ifNoChangesCategory}}
+                            {{#ifExistingCategory}}
+                                {{> existingCategoryAlert }}
+                            {{/ifExistingCategory}}
+                            {{#ifDeleteCategory}}
+                                {{> successDeleteCategoryAlert }}
+                            {{/ifDeleteCategory}}
+                            {{#ifDependentBookings}}
+                                {{> dependentBookingsAlert }}
+                            {{/ifDependentBookings}}-->
+                        </form>
+                    {{/with}}
+                {{else}}
+                    {{> notificationAreaCategoryEdit }}
+                {{/if}}
             </div>
         </div>
 
 
     </div>
+</template>
+
+<template name="notificationAreaCategoryEdit">
+    {{#if isConcerned "category_edit"}}
+        <div class="row">
+            <div class="twelve columns signin-prop notification">
+                <strong><p><b>{{notification.type}}</b>{{notification.text}}</p></strong>
+            </div>
+        </div>
+    {{/if}}
 </template>
 
 <template name="ifEditCategory">
