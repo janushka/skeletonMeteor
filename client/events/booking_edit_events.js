@@ -8,11 +8,11 @@ Template.BookingEdit.events({
 
         var localBooking = {};
         localBooking._id = Session.get('selectedBookingId');
-        localBooking.amount = S(template.find('#edit_booking_amount').value).replaceAll(',', '.').toFloat(2);
-        localBooking.datum = moment(template.find('#edit_booking_datum').value, 'DD-MM-YYYY').toDate();
-        localBooking.categoryId = S(template.find('#edit_booking_category').value).collapseWhitespace().s;
-        localBooking.category = S($("#edit_booking_category option:selected").text()).collapseWhitespace().s;
-        localBooking.remark = S(template.find('#edit_booking_remark').value).collapseWhitespace().s;
+        localBooking.amount = S($('#edit_booking_amount').val()).replaceAll(',', '.').toFloat(2);
+        localBooking.datum = moment($('#edit_booking_datum').val(), 'DD-MM-YYYY').toDate();
+        localBooking.categoryId = S($('#edit_booking_category').val()).collapseWhitespace().s;
+        localBooking.category = S($('#edit_booking_category option:selected').text()).collapseWhitespace().s;
+        localBooking.remark = S($('#edit_booking_remark').val()).collapseWhitespace().s;
 
         var currentBooking = Bookings.findOne({_id: Session.get('selectedBookingId')});
 
@@ -25,18 +25,16 @@ Template.BookingEdit.events({
             return;
         }
 
-        var affectedBooking = Bookings.update({_id: Session.get('selectedBookingId')}, localBooking, function (error, ids) {
+        Meteor.call('updateBooking', localBooking, function (error, result) {
             if (error) {
-                console.log('Error when updating booking!');
+                console.log('UpdateBooking:', error);
                 Session.set('notification', {
                     caller_template: 'booking_edit',
                     type: 'Fehler: ',
                     text: ' Buchung nicht ändernbar.'
                 });
             } else {
-                console.log('Success when updating ' + ids + ' bookings');
-                // Update CategoriesAmount-Collection immediately.
-                //ManipulateCategoriesAmounts.updateCategoriesByRange(Session.get('timeRange'));
+                console.log('UpdateBooking: Success when updating booking(s)');
                 Session.set('notification', {
                     caller_template: 'booking_edit',
                     type: 'Bestätigung: ',
@@ -49,18 +47,11 @@ Template.BookingEdit.events({
     'click #delete_booking': function (event, template) {
         event.preventDefault();
 
-        var affectedBooking = Bookings.remove({_id: Session.get('selectedBookingId')}, function (error) {
+        Meteor.call('deleteBooking', Session.get('selectedBookingId'), function (error, result) {
             if (error) {
-                console.log('Error when deleting booking!');
-                Session.set('notification', {
-                    caller_template: 'booking_edit',
-                    type: 'Fehler: ',
-                    text: 'Buchung nicht löschbar.'
-                });
+                console.log('DeleteBooking:', error);
             } else {
-                console.log('Success when removing booking with ID = ' + Session.get('selectedBookingId'));
-                // Update CategoriesAmount-Collection immediately.
-                //ManipulateCategoriesAmounts.updateCategoriesByRange(Session.get('timeRange'));
+                console.log('DeleteBooking: Success when deleting booking with Id', Session.get('selectedBookingId'));
                 Session.set('notification', {
                     caller_template: 'booking_edit',
                     type: 'Bestätigung: ',
@@ -68,6 +59,16 @@ Template.BookingEdit.events({
                 });
             }
         });
+    },
+
+    'change select': function (event, template) {
+        event.preventDefault();
+        var selectedCategoryId = $('#edit_booking_category').val();
+        Session.set('selectedCategoryId', {
+            caller_template: 'booking_edit',
+            categoryId: selectedCategoryId
+        });
+        console.log('Selected categoryId', selectedCategoryId);
     },
 
     'focus': function (event, template) {

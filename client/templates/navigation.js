@@ -36,17 +36,14 @@ Template.Navigation.events({
     },
 
     'click .booking-new': function () {
-        console.log('New booking!');
         Router.go('booking_new');
     },
 
     'click .category-new': function () {
-        console.log('New category!');
         Router.go('category_new');
     },
 
     'click .statistic': function () {
-        console.log('Statistic!');
         Router.go('statistic');
     }
 });

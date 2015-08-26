@@ -1,13 +1,9 @@
 Template.CategoryNew.onCreated(function () {
+    Meteor.subscribe('categories');
+
     Session.set('notification', undefined);
 });
 
-Template.CategoryNew.rendered = function () {
-    //Session.set('categoryExistingAlert', false);
-    //Session.set('categoryAddedAlert', false);
-};
-
-// Disable category save-button as long as the Alert is not closed.
 Template.CategoryNew.helpers({
     disabledProperty: function () {
         if (Session.get('categoryAddedAlert')) {
@@ -32,18 +28,6 @@ Template.CategoryNew.helpers({
             return '';
         } else {
             return 'disabled';
-        }
-    }
-});
-
-// Sub included helpers
-
-Template.CategoryNew.ifNewCategory.helpers({
-    isPresent: function () {
-        if (Session.get('categoryAddedAlert')) {
-            return true;
-        } else {
-            return false;
         }
     }
 });

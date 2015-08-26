@@ -9,11 +9,10 @@ Template.BookingNew.events({
         var localBooking = {};
         localBooking.amount = S($('#new_booking_amount').val()).replaceAll(',', '.').toFloat(2);
         localBooking.datum = moment($('#new_booking_datum').val(), 'DD-MM-YYYY').toDate();
-        //localBooking.category = Session.get('selectedCategory').name;
+        localBooking.category = Categories.findOne({_id: Session.get('selectedCategoryId').categoryId}).name;
         localBooking.categoryId = Session.get('selectedCategoryId').categoryId;
         localBooking.remark = S($('#new_booking_remark').val()).collapseWhitespace().s;
 
-        localBooking.category = Categories.findOne({_id: Session.get('selectedCategoryId').categoryId});
 
         var bookingId = Bookings.insert(localBooking, function (error, id) {
             if (error) {

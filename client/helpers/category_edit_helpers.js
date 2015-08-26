@@ -1,4 +1,6 @@
 Template.CategoryEdit.onCreated(function () {
+    Meteor.subscribe('categories');
+
     if (Session.equals('selectedCategoryId', undefined)) {
         Session.set('notification', {
             caller_template: 'category_edit',

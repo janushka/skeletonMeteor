@@ -54,22 +54,6 @@
                                    class="button" {{disabledProperty}}>endgültig löschen</a>
                             </div>
                             {{> notificationAreaBookingEdit }}
-
-                            <!--{{#ifEditBooking}}
-                                {{> successEditBookingAlert }}
-                            {{/ifEditBooking}}
-                                {{#ifErrorEditBooking}}
-                                    {{> errorEditBookingAlert }}
-                                {{/ifErrorEditBooking}}
-                                {{#ifNoChangesBooking}}
-                                    {{> noChangesInBookingAlert }}
-                                {{/ifNoChangesBooking}}
-                                {{#ifDeleteBooking}}
-                                    {{> successDeleteBookingAlert }}
-                                {{/ifDeleteBooking}}
-                                {{#ifErrorDeleteBooking}}
-                                    {{> errorDeleteBookingAlert }}
-                                {{/ifErrorDeleteBooking}}-->
                         </form>
                     {{/with}}
                 {{else}}
@@ -89,74 +73,4 @@
             </div>
         </div>
     {{/if}}
-</template>
-
-<template name="ifEditBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifErrorEditBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifNoChangesBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifDeleteBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifErrorDeleteBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="successEditBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Buchung erfolgreich geändert.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="errorEditBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Fehler:</b> Buchung nicht ändernbar.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="noChangesInBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Warnung:</b> Keine Änderungen festgestellt. Speichern abgebrochen!</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="successDeleteBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Buchung erfolgreich gelöscht.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="errorDeleteBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Fehler:</b> Buchung nicht löschbar.</p></strong>
-        </div>
-    </div>
 </template>

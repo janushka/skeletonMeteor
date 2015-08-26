@@ -11,7 +11,7 @@ Meteor.publish("bookings", function () {
 });
 
 Meteor.publish("categories", function () {
-    return Categories.find();
+    return Categories.find({}, {sort: {name: 1}});
 });
 
 Meteor.publish('limitedCategories', function (categoriesNames) {

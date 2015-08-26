@@ -4,19 +4,10 @@
 
 Template.BookingList.events({
     'click a.editBooking': function (event, template) {
-        var bookingId = $(event.currentTarget).attr('data-id');
+        var bookingId = $(event.currentTarget).attr('booking-id');
+        var categoryId = $(event.currentTarget).attr('category-id');
         Session.set('selectedBookingId', bookingId);
-    },
-
-    'click #close_category_alert': function (event, template) {
-        event.preventDefault();
-        Session.set('categoriesAlert', true);
-    },
-
-    'focus': function (event, template) {
-        event.preventDefault();
-        // Session variable will be checked on false once a field gains focus.
-        Session.set('bookingAddedAlert', false);
+        Session.set('selectedCategoryId', categoryId);
     }
 });
 

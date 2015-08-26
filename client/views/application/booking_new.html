@@ -52,16 +52,7 @@
                         <a id="submit_booking"
                            class="button">buchen</a>
                     </div>
-
                     {{> notificationAreaBookingNew }}
-
-                    <!--{{#ifCategoriesAlert}}
-                        {{> noCategoriesAlert }}
-                    {{else}}
-                    {{/ifCategoriesAlert}}
-                        {{#ifNewBooking}}
-                            {{> successBookingAlert }}
-                        {{/ifNewBooking}}-->
                 </form>
             </div>
         </div>
@@ -78,42 +69,4 @@
             </div>
         </div>
     {{/if}}
-</template>
-
-<template name="ifCategoriesAlert">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{else}}
-        {{> UI.elseBlock}}
-    {{/if}}
-</template>
-
-<template name="ifCategoriesLink">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{else}}
-        {{> UI.elseBlock}}
-    {{/if}}
-</template>
-
-<template name="ifNewBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="noCategoriesAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Info:</b> Kategorie(n) zuvor anlegen.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="successBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Buchung erfolgreich gespeichert.</p></strong>
-        </div>
-    </div>
 </template>

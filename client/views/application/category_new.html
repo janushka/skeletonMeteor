@@ -25,12 +25,7 @@
                     <div class="row">
                         <a id="submit_category" class="button">speichern</a>
                     </div>
-                    {{#ifNewCategory}}
-                        {{> successNewCategoryAlert }}
-                    {{/ifNewCategory}}
-                    {{#ifExistingCategory}}
-                        {{> existingCategoryAlert }}
-                    {{/ifExistingCategory}}
+                    {{> notificationAreaCategoryNew }}
                 </form>
             </div>
         </div>
@@ -39,30 +34,12 @@
     </div>
 </template>
 
-<template name="ifNewCategory">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifExistingCategory">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="successNewCategoryAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Kategorie erfolgreich gespeichert.</p></strong>
+<template name="notificationAreaCategoryNew">
+    {{#if isConcerned "category_new"}}
+        <div class="row">
+            <div class="twelve columns signin-prop notification">
+                <strong><p><b>{{notification.type}}</b>{{notification.text}}</p></strong>
+            </div>
         </div>
-    </div>
-</template>
-
-<template name="existingCategoryAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Fehler:</b> Kategorie existiert bereits.</p></strong>
-        </div>
-    </div>
+    {{/if}}
 </template>

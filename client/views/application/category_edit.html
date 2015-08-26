@@ -33,22 +33,6 @@
                                     löschen</a>
                             </div>
                             {{> notificationAreaCategoryEdit }}
-
-                            <!--{{#ifEditCategory}}
-                                {{> successEditCategoryAlert }}
-                            {{/ifEditCategory}}
-                            {{#ifNoChangesCategory}}
-                                {{> noChangesInCategoryAlert }}
-                            {{/ifNoChangesCategory}}
-                            {{#ifExistingCategory}}
-                                {{> existingCategoryAlert }}
-                            {{/ifExistingCategory}}
-                            {{#ifDeleteCategory}}
-                                {{> successDeleteCategoryAlert }}
-                            {{/ifDeleteCategory}}
-                            {{#ifDependentBookings}}
-                                {{> dependentBookingsAlert }}
-                            {{/ifDependentBookings}}-->
                         </form>
                     {{/with}}
                 {{else}}
@@ -69,74 +53,4 @@
             </div>
         </div>
     {{/if}}
-</template>
-
-<template name="ifEditCategory">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifNoChangesCategory">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifExistingCategory">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifDeleteCategory">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="ifDependentBookings">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="successEditCategoryAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Kategorie erfolgreich gespeichert.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="noChangesInCategoryAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Warnung:</b> Keine Änderungen festgestellt. Speichern abgebrochen!</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="existingCategoryAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Fehler:</b> Kategorie existiert bereits.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="successDeleteCategoryAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Kategorie erfolgreich gelöscht.</p></strong>
-        </div>
-    </div>
-</template>
-
-<template name="dependentBookingsAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Fehler:</b> Abhängige Buchungen zuerst, dann diese Kategorie löschen.</p></strong>
-        </div>
-    </div>
 </template>

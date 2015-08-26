@@ -14,8 +14,6 @@ Template.BookingNew.onCreated(function () {
             Session.set('notification', undefined);
         }
     });
-
-
 });
 
 Template.BookingNew.rendered = function () {
@@ -59,16 +57,8 @@ Template.BookingNew.rendered = function () {
         $('#new_booking_remark').prop('disabled', true);
         $('#submit_booking').prop('disabled', true);
     }
-
-    //var preselectedCategory = this.find('#new_booking_category').value;
-    //Session.set('selectedCategory', preselectedCategory);
-
-    //Session.set('categoryExistingAlert', false);
-    //Session.set('categoryAddedAlert', false);
 };
 
-// If no category(ies) present, then disable booking-button and input-fields.
-// Otherwise enable them all.
 Template.BookingNew.helpers({
     categoryId: function () {
         return Categories.find({}, {
@@ -85,7 +75,6 @@ Template.BookingNew.helpers({
 
     disabledProperty: function () {
         var categoriesCount = Categories.find().count();
-        //if (categoriesCount === 0 || Session.get('bookingAddedAlert')) {
         if (categoriesCount === 0) {
             return 'disabled';
         } else {

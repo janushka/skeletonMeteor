@@ -1,78 +1,35 @@
 Router.configure({
     // we use the  appBody template to define the layout for the entire app
     layoutTemplate: 'appBody',
-
     // the appNotFound template is used for unknown routes and missing lists
     //notFoundTemplate: 'appNotFound',
-
     // show the appLoading template whilst the subscriptions below load their data
     //loadingTemplate: 'appLoading',
-
-    // wait on the following subscriptions before rendering the page to ensure
-    // the data it's expecting is present
-    /*waitOn: function() {
-     return [
-     Meteor.subscribe('publicLists'),
-     Meteor.subscribe('privateLists')
-     ];
-     }*/
 });
 
-dataReadyHold = null;
+Router.route('home', {
+    path: '/',
+    action: function () {
+        this.render('LoginHeader', {to: 'header'});
+        this.render('Login', {to: 'login'});
+        this.render('', {to: 'content'});
+    }
+});
 
-//if (Meteor.isClient) {
-// Keep showing the launch screen on mobile devices until we have loaded
-// the app's data
-//dataReadyHold = LaunchScreen.hold();
+Router.route('signin', {
+    path: '/signin',
+    action: function () {
+        this.render('LoginHeader', {to: 'header'});
+        this.render('Signin', {to: 'login'});
+    }
+});
 
-// Show the loading screen on desktop
-//Router.onBeforeAction('loading', {except: ['join', 'signin']});
-//Router.onBeforeAction('dataNotFound', {except: ['join', 'signin']});
-//}
-
-Router.map(function () {
-    this.route('signin', {
-        path: '/signin',
-        action: function () {
-            this.render('LoginHeader', {to: 'header'});
-            this.render('Signin', {to: 'login'});
-        }
-    });
-
-    this.route('register', {
-        path: '/register',
-        action: function () {
-            this.render('LoginHeader', {to: 'header'});
-            this.render('Register', {to: 'login'});
-        }
-    });
-
-    this.route('home', {
-        path: '/',
-        action: function () {
-            this.render('LoginHeader', {to: 'header'});
-            this.render('Login', {to: 'login'});
-            this.render('', {to: 'content'});
-        }
-    });
-
-    /*this.route('booking_list', {
-     path: '/booking_list/:bookingsLimit?',
-     controller: 'BookingsListController'
-
-     });*/
-
-    /*this.route('booking_new', {
-        path: '/booking_new',
-        controller: 'BookingNewController'
-
-    });*/
-
-    this.route('category_new', {
-        path: '/category_new',
-        controller: 'CategoryNewController'
-
-    });
+Router.route('register', {
+    path: '/register',
+    action: function () {
+        this.render('LoginHeader', {to: 'header'});
+        this.render('Register', {to: 'login'});
+    }
 });
 
 Router.route('booking_list', {
@@ -93,9 +50,14 @@ Router.route('booking_edit', {
 
 });
 
+Router.route('category_new', {
+    path: '/category_new',
+    controller: 'CategoryNewController'
+
+});
+
 Router.route('category_edit', {
     path: '/category_edit/:_id?',
-    //path: '/category_edit',
     controller: 'CategoryEditController'
 
 });
@@ -124,28 +86,36 @@ Router.route("test", {
         });
     }
 
- //   data: function() {
-        //console.log("The DATA is ", Util.getResponse("getSomeAuthors")[0]);
+    //   data: function() {
+    //console.log("The DATA is ", Util.getResponse("getSomeAuthors")[0]);
 
     //},
     //action: function () {
-        //console.log("The data is ", Util.getResponse("getSomeAuthors")[0]);
-      //  this.data();
+    //console.log("The data is ", Util.getResponse("getSomeAuthors")[0]);
+    //  this.data();
     //},
     //waitOn: function () {
-        // Call the async function, with an optional data argument
-      //  return Util.waitOnServer("getSomeAuthors", {name: 'Janne'});
-        //return Util.waitOnServer("testWaitOn", {foo: "bar"}, {bar: "foo"}, {name: 'Janne'});
+    // Call the async function, with an optional data argument
+    //  return Util.waitOnServer("getSomeAuthors", {name: 'Janne'});
+    //return Util.waitOnServer("testWaitOn", {foo: "bar"}, {bar: "foo"}, {name: 'Janne'});
     //}
 });
 
 // CONTROLLERS
 
+HomeController = RouteController.extend({
+    action: function () {
+        this.render('LoginHeader', {to: 'header'});
+        this.render('Login', {to: 'login'});
+        this.render('', {to: 'content'});
+    }
+});
+
 BookingsListController = RouteController.extend({
     increment: 5,
     /*bookingsLimit: function () {
-        return parseInt(this.params.bookingsLimit) || this.increment;
-    },*/
+     return parseInt(this.params.bookingsLimit) || this.increment;
+     },*/
     findOptions: function () {
         return {sort: {datum: -1}, limit: 10};
         //return {sort: {datum: -1}, limit: this.bookingsLimit()};
@@ -156,8 +126,8 @@ BookingsListController = RouteController.extend({
         return Meteor.subscribe('bookings', this.findOptions());
     },
     /*bookings: function () {
-        return Bookings.find({}, this.findOptions());
-    },*/
+     return Bookings.find({}, this.findOptions());
+     },*/
     data: function () {
         //return {bookings: Bookings.find({}, this.findOptions())};
         //var tempBooks = this.bookings();
@@ -181,11 +151,8 @@ BookingsListController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('BookingList', {to: 'content'});
-
-            setTimeRangeInSession();
-
-            console.log('Template BookingsList can be rendered!');
-
+            //setTimeRangeInSession();
+            console.log('Template BookingList rendered');
             //Session.set('bookingsLimit', this.bookingsLimit());
             //this.render();
         }
@@ -200,8 +167,6 @@ BookingNewController = RouteController.extend({
         if (!Meteor.userId()) {
             Router.go('home');
         } else {
-            // otherwise don't hold up the rest of hooks or our route/action function
-            // from running
             this.next();
         }
     },
@@ -210,6 +175,7 @@ BookingNewController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('BookingNew', {to: 'content'});
+            console.log('Template BookingNew rendered');
         }
     }
 });
@@ -219,8 +185,6 @@ BookingEditController = RouteController.extend({
         if (!Meteor.userId()) {
             Router.go('home');
         } else {
-            // otherwise don't hold up the rest of hooks or our route/action function
-            // from running
             this.next();
         }
     },
@@ -229,8 +193,7 @@ BookingEditController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('BookingEdit', {to: 'content'});
-            //Session.set('editBookingCategory', this.params.category);
-            console.log('Template Edit-Booking can be rendered!');
+            console.log('Template BookingEdit rendered');
         }
     }
 });
@@ -240,8 +203,6 @@ CategoryNewController = RouteController.extend({
         if (!Meteor.userId()) {
             Router.go('home');
         } else {
-            // otherwise don't hold up the rest of hooks or our route/action function
-            // from running
             this.next();
         }
     },
@@ -250,6 +211,7 @@ CategoryNewController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('CategoryNew', {to: 'content'});
+            console.log('Template CategoryNew rendered');
         }
     }
 });
@@ -277,8 +239,7 @@ CategoryEditController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('CategoryEdit', {to: 'content'});
-            //Session.set('editCategory', this.params.category);
-            console.log('Template Edit-Category can be rendered!');
+            console.log('Template CategoryEdit rendered');
         }
     }
 });
@@ -305,6 +266,7 @@ StatisticController = RouteController.extend({
             this.render('ContentHeader', {to: 'header'});
             this.render('Navigation', {to: 'navigation'});
             this.render('Statistic', {to: 'content'});
+            console.log('Template Statistics rendered');
         }
     }
 });

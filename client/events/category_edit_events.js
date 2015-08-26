@@ -22,18 +22,16 @@ Template.CategoryEdit.events({
             return;
         }
 
-        var affectedCategories = Categories.update({_id: localCategory._id}, localCategory, function (error, ids) {
+        Meteor.call('updateCategory', localCategory, function (error, result) {
             if (error) {
-                console.log('Error when updating category!');
+                console.log('UpdateCategory:', error);
                 Session.set('notification', {
                     caller_template: 'category_edit',
                     type: 'Fehler: ',
                     text: 'Kategorie existiert bereits.'
                 });
             } else {
-                console.log('Success when updating ' + ids + ' categories');
-                // Update Booking-Collection immediately: category-name may have been altered.
-                //Meteor.call('updateBookingsByCategory', localCategory.categoryId);
+                console.log('UpdateCategory: Success when updating category(ies)');
                 Session.set('notification', {
                     caller_template: 'category_edit',
                     type: 'Bestätigung: ',
@@ -41,14 +39,20 @@ Template.CategoryEdit.events({
                 });
             }
         });
+
+        Meteor.call('updateBookingsCategory', localCategory, function (error, result) {
+            if (error) {
+                console.log('UpdateCategory:', error);
+            } else {
+                console.log('UpdateCategory: Success when updating dependent booking(s).');
+            }
+        });
     },
 
     'click #delete_category': function (event, template) {
         event.preventDefault();
 
-        var categoryId = Session.get('selectedCategoryId').categoryId;
-
-        var dependentBookings = Bookings.find({categoryId: categoryId});
+        var dependentBookings = Bookings.find({categoryId: Session.get('selectedCategoryId').categoryId});
         if (dependentBookings.count() != 0) {
             Session.set('notification', {
                 caller_template: 'category_edit',
@@ -58,13 +62,18 @@ Template.CategoryEdit.events({
             return;
         }
 
-        Session.set('notification', {
-            caller_template: 'category_edit',
-            type: 'Bestätigung: ',
-            text: 'Kategorie erfolgreich gelöscht.'
+        Meteor.call('deleteCategory', Session.get('selectedCategoryId').categoryId, function (error, result) {
+            if (error) {
+                console.log('DeleteCategory:', error);
+            } else {
+                console.log('DeleteCategory: Success when deleting category with Id', Session.get('selectedCategoryId').categoryId);
+                Session.set('notification', {
+                    caller_template: 'category_edit',
+                    type: 'Bestätigung: ',
+                    text: 'Kategorie erfolgreich gelöscht.'
+                });
+            }
         });
-
-        console.log("You just deleted a category.");
     },
 
     'focus': function (event, template) {

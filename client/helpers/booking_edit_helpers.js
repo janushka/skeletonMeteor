@@ -42,7 +42,7 @@ Template.BookingEdit.helpers({
     },
 
     isSelected: function () {
-        return Session.equals('selectedBookingId', this._id) ? 'selected' : '';
+        return Session.equals('selectedCategoryId', this._id) ? 'selected' : '';
     },
 
     datum: function () {
