@@ -22,7 +22,7 @@ Template.CategoryEdit.events({
             return;
         }
 
-        Meteor.call('updateCategory', localCategory, function (error, result) {
+        Meteor.call('updateCategory', localCategory, function (error) {
             if (error) {
                 console.log('UpdateCategory:', error);
                 Session.set('notification', {
@@ -31,11 +31,23 @@ Template.CategoryEdit.events({
                     text: 'Kategorie existiert bereits.'
                 });
             } else {
-                console.log('UpdateCategory: Success when updating category(ies)');
-                Session.set('notification', {
-                    caller_template: 'category_edit',
-                    type: 'Bestätigung: ',
-                    text: 'Kategorie erfolgreich gespeichert.'
+                Meteor.call('updateBookingsCategory', localCategory, function (error) {
+                    if (error) {
+                        console.log('UpdateCategory:', error);
+                        Session.set('notification', {
+                            caller_template: 'category_edit',
+                            type: 'Fehler: ',
+                            text: 'Kategorie abhängige Buchungen nicht änderbar.'
+                        });
+                    } else {
+                        console.log('UpdateCategory: Success when updating category(ies)');
+                        console.log('UpdateCategory: Success when updating dependent booking(s).');
+                        Session.set('notification', {
+                            caller_template: 'category_edit',
+                            type: 'Bestätigung: ',
+                            text: 'Kategorie (und eventuell abhängigen Buchungen) erfolgreich gespeichert.'
+                        });
+                    }
                 });
             }
         });
@@ -62,7 +74,7 @@ Template.CategoryEdit.events({
             return;
         }
 
-        Meteor.call('deleteCategory', Session.get('selectedCategoryId').categoryId, function (error, result) {
+        Meteor.call('deleteCategory', Session.get('selectedCategoryId').categoryId, function (error) {
             if (error) {
                 console.log('DeleteCategory:', error);
             } else {

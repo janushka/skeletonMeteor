@@ -25,7 +25,7 @@ Template.BookingEdit.events({
             return;
         }
 
-        Meteor.call('updateBooking', localBooking, function (error, result) {
+        Meteor.call('updateBooking', localBooking, function (error) {
             if (error) {
                 console.log('UpdateBooking:', error);
                 Session.set('notification', {
@@ -47,7 +47,7 @@ Template.BookingEdit.events({
     'click #delete_booking': function (event, template) {
         event.preventDefault();
 
-        Meteor.call('deleteBooking', Session.get('selectedBookingId'), function (error, result) {
+        Meteor.call('deleteBooking', Session.get('selectedBookingId'), function (error) {
             if (error) {
                 console.log('DeleteBooking:', error);
             } else {

@@ -7,30 +7,30 @@ Template.CategoryNew.events({
         event.preventDefault();
 
         var localCategory = {};
+        // adding _id to the localCategory inside the client
+        // By doing this, we no longer rely on the server result to get the categoryId
+        localCategory._id = Random.id();
         localCategory.name = S($('#new_category_name').val()).collapseWhitespace().s;
         localCategory.description = S($('#new_category_description').val()).collapseWhitespace().s;
 
-        var id = Meteor.call('createCategory', localCategory, function (error, result) {
-            console.log('Error:', error);
-            console.log('Success:', result);
+        Meteor.call('createCategory', localCategory, function (error) {
+            if (error) {
+                console.log('CreateCategory:', 'Error when inserting category.');
+                Session.set('notification', {
+                    caller_template: 'category_new',
+                    type: 'Fehler: ',
+                    text: 'Kategorie existiert bereits.'
+                });
+            } else {
+                console.log('CreateCategory: Success when inserting category');
+                Session.set('notification', {
+                    caller_template: 'category_new',
+                    type: 'Bestätigung: ',
+                    text: 'Kategorie erfolgreich angelegt und gespeichert.'
+                });
+                resetFields(template, ['#new_category_name', '#new_category_description']);
+            }
         });
-
-        if (Categories.findOne({_id: id}) == undefined) {
-            console.log('CreateCategory:', 'Error when inserting category.');
-            Session.set('notification', {
-                caller_template: 'category_new',
-                type: 'Fehler: ',
-                text: 'Kategorie existiert bereits.'
-            });
-        } else {
-            console.log('CreateCategory: Success when inserting category');
-            Session.set('notification', {
-                caller_template: 'category_new',
-                type: 'Bestätigung: ',
-                text: 'Kategorie erfolgreich angelegt und gespeichert.'
-            });
-            resetFields(template, ['#new_category_name', '#new_category_description']);
-        }
 
         function resetFields(template, fieldnames) {
             _.each(fieldnames, function (element, index, list) {

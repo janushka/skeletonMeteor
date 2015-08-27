@@ -7,32 +7,30 @@ Template.BookingNew.events({
         event.preventDefault();
 
         var localBooking = {};
+        // adding _id to the localBooking inside the client
+        // By doing this, we no longer rely on the server result to get the bookingId
+        localBooking._id = Random.id();
         localBooking.amount = S($('#new_booking_amount').val()).replaceAll(',', '.').toFloat(2);
         localBooking.datum = moment($('#new_booking_datum').val(), 'DD-MM-YYYY').toDate();
         localBooking.category = Categories.findOne({_id: Session.get('selectedCategoryId').categoryId}).name;
         localBooking.categoryId = Session.get('selectedCategoryId').categoryId;
         localBooking.remark = S($('#new_booking_remark').val()).collapseWhitespace().s;
 
-
-        var bookingId = Bookings.insert(localBooking, function (error, id) {
+        Meteor.call('createBooking', localBooking, function (error) {
             if (error) {
-                console.log('Error when inserting booking!');
+                console.log('CreateBooking:', 'Error when inserting booking.');
                 Session.set('notification', {
                     caller_template: 'booking_new',
                     type: 'Fehler: ',
                     text: 'Buchung nicht speicherbar.'
                 });
             } else {
-                console.log('Success when inserting booking with ID = ' + id);
-                // Update CategoriesAmount-Collection immediately.
-                //ManipulateCategoriesAmounts.updateCategoriesByRange(Session.get('timeRange'));
-                //ManipulateCategoriesAmounts.updateCategoriesByRange('all');
+                console.log('CreateBooking: Success when inserting booking');
                 Session.set('notification', {
                     caller_template: 'booking_new',
                     type: 'Bestätigung: ',
-                    text: 'Buchung erfolgreich gespeichert.'
+                    text: 'Buchung erfolgreich angelegt und gespeichert.'
                 });
-                // Reset all input-fields
                 resetFields(template, ['#new_booking_amount', '#new_booking_datum', '#new_booking_category', '#new_booking_remark']);
             }
         });
