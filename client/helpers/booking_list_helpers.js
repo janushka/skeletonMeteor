@@ -2,8 +2,11 @@
  * Created by Njoku on 16.06.2015.
  */
 
+// Template BookingList
+
 Template.BookingList.onCreated(function () {
     Meteor.subscribe("bookings");
+
     this.autorun(function () {
         if (Bookings.find().count() == 0) {
             Session.set('notification', {
@@ -17,6 +20,13 @@ Template.BookingList.onCreated(function () {
             Session.set('bookingsExist', true);
         }
     });
+
+    if (Session.equals('isSearchForm', undefined)) {
+        Session.set('isSearchForm', {
+            isSet: false,
+            caller_template: 'booking_list'
+        });
+    }
 });
 
 Template.BookingList.helpers({
@@ -25,7 +35,9 @@ Template.BookingList.helpers({
     },
 
     bookings: function () {
-        var results = Bookings.find();
+        // Retrieve bookings for selected (or not selected) range and category
+        var currentQuery = getQuery();
+        var results = Bookings.find(currentQuery);
         return results;
     },
 
@@ -53,3 +65,108 @@ Template.BookingList.helpers({
         }
     }
 });
+
+// Template searchFormBookingList
+
+Template.searchFormBookingList.onCreated(function () {
+    Meteor.subscribe("categories");
+
+    Session.set('datePicker', undefined);
+
+    this.autorun(function () {
+        if (Session.get('datePicker') == undefined) {
+            Session.set('notification', undefined);
+        } else {
+            var valid = validateInputDates();
+        }
+    });
+
+    if (Session.equals('isSearchForm', undefined)) {
+        Session.set('isSearchForm', {
+            isSet: false,
+            caller_template: 'booking_list'
+        });
+    }
+});
+
+Template.searchFormBookingList.rendered = function () {
+    var datePicker = {};
+    var pickerVon = new Pikaday({
+        field: document.getElementById('search_booking_list_von_datum'),
+        format: 'DD.MM.YYYY',
+        onSelect: function () {
+        },
+        onClose: function () {
+            if (moment(this.getMoment()).isValid()) {
+                datePicker.vonDatum = this.getMoment().toDate();
+                Session.set('datePicker', datePicker);
+            } else {
+                datePicker.vonDatum = undefined;
+                Session.set('datePicker', datePicker);
+            }
+            console.log('Closed', moment(this.getMoment()).isValid());
+        }
+    });
+
+    var pickerBis = new Pikaday({
+        field: document.getElementById('search_booking_list_bis_datum'),
+        format: 'DD.MM.YYYY',
+        onSelect: function () {
+        },
+        onClose: function () {
+            if (moment(this.getMoment()).isValid()) {
+                datePicker.bisDatum = this.getMoment().toDate();
+                Session.set('datePicker', datePicker);
+            } else {
+                datePicker.bisDatum = undefined;
+                Session.set('datePicker', datePicker);
+            }
+            console.log('Closed', moment(this.getMoment()).isValid());
+        }
+    });
+};
+
+Template.searchFormBookingList.helpers({
+    categoryId: function () {
+        return Categories.find({}, {
+            fields: {
+                name: 1,
+                _id: 1
+            }
+        });
+    },
+});
+
+function validateInputDates() {
+    if (Session.get('datePicker').vonDatum != undefined && Session.get('datePicker').bisDatum != undefined) {
+        if (moment(Session.get('datePicker').vonDatum).isAfter(Session.get('datePicker').bisDatum)) {
+            Session.set('notification', {
+                caller_template: 'booking_list',
+                type: 'Fehler: ',
+                text: 'Von- muss kleiner als Bis-Datum sein!'
+            });
+            return false;
+        } else {
+            Session.set('notification', undefined);
+        }
+    }
+    else {
+        Session.set('notification', undefined);
+    }
+    return true;
+}
+
+function getQuery() {
+    if (Session.get('datePicker') == undefined) {
+        return {};
+    } else {
+        var vonDatum = Session.get('datePicker').vonDatum;
+        var bisDatum = Session.get('datePicker').bisDatum;
+        var query = {};
+        if (vonDatum != undefined && bisDatum != undefined) {
+            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};
+        }
+        return query;
+    }
+    //console.log('In getCurrentBookings: ' + vonDatum + ' ' + bisDatum);
+}

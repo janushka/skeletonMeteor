@@ -25,3 +25,37 @@ Template.registerHelper('categorySelected', function (callerTemplate) {
 Template.registerHelper('notification', function () {
     return Session.get('notification');
 });
+
+Template.registerHelper('isSearchFormConcerned', function (callerTemplate) {
+    var temp = Session.get('isSearchForm');
+    if (Session.get('isSearchForm') != undefined && Session.get('isSearchForm').caller_template == callerTemplate) {
+        return true;
+    }
+    return false;
+});
+
+Template.registerHelper('searchFormEnabled', function () {
+    if (Session.get('isSearchForm').isSet) {
+        return true;
+    }
+    return false;
+});
+
+Template.registerHelper('searchFormEnabler', function () {
+    if (Session.get('isSearchForm') && Session.get('isSearchForm').isSet) {
+        return '[zu*]';
+    } else {
+        return '[auf*]';
+    }
+});
+
+Template.registerHelper('myBookings', function () {
+    if (Session.get('isSearchForm') && Session.get('isSearchForm').isSet) {
+        return '[zu*]';
+    } else {
+        return '[auf*]';
+    }
+});
+
+
+

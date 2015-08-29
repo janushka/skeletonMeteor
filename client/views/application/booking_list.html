@@ -1,11 +1,14 @@
 <template name="BookingList">
     <div class="docs-section">
-        <h6 class="docs-header">Ausgaben {{ categoryTitle }} <span class="collapse"><a style="text-decoration: none" href="#">[auf*]</a></span></h6>
+        <h6 class="docs-header">Ausgaben {{ categoryTitle }} {{> searchFormAreaBookingList }}</h6>
 
         <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
             Tag, Woche, Monat und Jahr aufgerufen werden.
             Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
             Standardmäßig wird die aktuelle Woche vorselektiert.</p>
+        {{#if searchFormEnabled}}
+            {{> searchFormBookingList }}
+        {{/if}}
         {{#if bookingsExist}}
             <div class="row">
                 <div class="twelve columns">
@@ -53,5 +56,43 @@
             </div>
         </div>
     {{/if}}
+</template>
+
+<template name="searchFormAreaBookingList">
+    {{#if isSearchFormConcerned "booking_list"}}
+        <span class="collapse"><a class="searchForm" style="text-decoration: none"
+                                  href="">{{ searchFormEnabler }}</a></span>
+    {{/if}}
+</template>
+
+<template name="searchFormBookingList">
+    <form id="search_booking_list">
+        <div class="row">
+            <div class="one-third column">
+                <label for="search_booking_list_von_datum">Von</label>
+                <input type="text" name="search_booking_list_von_datum" id="search_booking_list_von_datum"
+                       class="u-full-width" {{disabledProperty}}/>
+            </div>
+            <div class="one-third column">
+                <label for="search_booking_list_bis_datum">Bis</label>
+                <input type="text" name="search_booking_list_bis_datum" id="search_booking_list_bis_datum"
+                       class="u-full-width"  {{disabledProperty}}>
+            </div>
+            <div class="one-third column">
+                <label for="search_booking_list_category">Kategorie</label>
+                <select name="category" id="search_booking_list_category" class="u-full-width">
+                    <option value="all">-- Alle --</option>
+                    {{#each categoryId}}
+                        <option value="{{_id}}" {{isSelected}}>{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <a id="search_booking_list_search"
+               class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>suchen</a>
+        </div>
+        {{> notificationAreaBookingList }}
+    </form>
 </template>
 
