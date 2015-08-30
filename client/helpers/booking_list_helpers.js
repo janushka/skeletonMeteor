@@ -87,14 +87,21 @@ Template.searchFormBookingList.onCreated(function () {
             caller_template: 'booking_list'
         });
     }
+
+    this.testReactive = new ReactiveVar();
+    this.testReactive.set('Start text.');
 });
 
 Template.searchFormBookingList.rendered = function () {
+    var selfTempl = this;
+
     var datePicker = {};
     var pickerVon = new Pikaday({
         field: document.getElementById('search_booking_list_von_datum'),
         format: 'DD.MM.YYYY',
         onSelect: function () {
+            console.log('Value of testReactive', selfTempl.testReactive.get());
+            selfTempl.testReactive.set('Step 1 Text.');
         },
         onClose: function () {
             if (moment(this.getMoment()).isValid()) {
@@ -124,6 +131,8 @@ Template.searchFormBookingList.rendered = function () {
             console.log('Closed', moment(this.getMoment()).isValid());
         }
     });
+
+
 };
 
 Template.searchFormBookingList.helpers({
@@ -135,6 +144,10 @@ Template.searchFormBookingList.helpers({
             }
         });
     },
+
+    smallText: function() {
+        return Template.instance().testReactive.get();
+    }
 });
 
 function validateInputDates() {
