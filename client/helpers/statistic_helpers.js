@@ -2,6 +2,24 @@
  * Created by marcnjoku on 15.07.15.
  */
 
+Template.Statistic.onCreated(function () {
+    Meteor.subscribe("bookings");
+
+    Session.set('notification', undefined);
+
+    if (Session.equals('isSearchForm', undefined)) {
+        Session.set('isSearchForm', {
+            isSet: false,
+            caller_template: 'statistic'
+        });
+    } else {
+        Session.set('isSearchForm', {
+            isSet: false,
+            caller_template: 'statistic'
+        });
+    }
+});
+
 Template.Statistic.rendered = function () {
     var picker1 = new Pikaday({
         field: document.getElementById('statistic_von_datum'),
@@ -47,5 +65,26 @@ Template.Statistic.helpers({
 
         totalAmount = S(totalAmount).toFloat(2);
         return S(totalAmount).replaceAll('.', ',');
+    }
+});
+
+// Template searchFormBookingList
+
+Template.searchFormStatistic.onCreated(function () {
+    Session.set('datePicker', undefined);
+
+    this.autorun(function () {
+        if (Session.get('datePicker') == undefined) {
+            Session.set('notification', undefined);
+        } else {
+            var valid = validateInputDates();
+        }
+    });
+
+    if (Session.equals('isSearchForm', undefined)) {
+        Session.set('isSearchForm', {
+            isSet: false,
+            caller_template: 'statistic'
+        });
     }
 });

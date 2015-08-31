@@ -49,13 +49,4 @@ Template.registerHelper('searchFormEnabler', function () {
     }
 });
 
-Template.registerHelper('myBookings', function () {
-    if (Session.get('isSearchForm') && Session.get('isSearchForm').isSet) {
-        return '[zu*]';
-    } else {
-        return '[auf*]';
-    }
-});
-
-
 

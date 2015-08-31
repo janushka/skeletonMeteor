@@ -143,10 +143,6 @@ Template.searchFormBookingList.helpers({
                 _id: 1
             }
         });
-    },
-
-    smallText: function () {
-        return Template.instance().testReactive.get();
     }
 });
 

@@ -1,51 +1,14 @@
 <template name="Statistic">
     <div class="docs-section">
-        <h6 class="docs-header">Statistik</h6>
+        <h6 class="docs-header">Statistik {{> searchFormAreaStatistic }}</h6>
 
         <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
             Tag, Woche, Monat und Jahr aufgerufen werden.
             Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
             Standardmäßig wird die aktuelle Woche vorselektiert.</p>
-
-        <div class="row">
-            <div class="twelve columns">
-                <form id="new_booking">
-                    <div class="row">
-                        <div class="one-third column">
-                            <label for="statistic_von_datum">Von</label>
-                            <input type="text" name="statistic_von_datum" id="statistic_von_datum"
-                                   class="u-full-width" {{disabledProperty}}/>
-                        </div>
-                        <div class="one-third column">
-                            <label for="statistic_bis_datum">Bis</label>
-                            <input type="text" name="statistic_bis_datum" id="statistic_bis_datum"
-                                   class="u-full-width"  {{disabledProperty}}>
-                        </div>
-                        <div class="one-third column">
-                            <label for="statistic_category">Kategorie</label>
-                            <select name="category" id="statistic_category" class="u-full-width" {{disabledProperty}}>
-                                <option value="all">-- Alle --</option>
-                                {{#each categories}}
-                                    <option value={{ name }}>{{ name }}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <a id="statistic_search"
-                           class="button" {{ bookingButtonDisabled }} {{disabledProperty}}>suchen</a>
-                    </div>
-                    <!--{{#ifCategoriesAlert}}
-                        {{> noCategoriesAlert }}
-                    {{else}}
-                    {{/ifCategoriesAlert}}
-                    {{#ifNewBooking}}
-                        {{> successBookingAlert }}
-                    {{/ifNewBooking}}-->
-                </form>
-            </div>
-        </div>
-
+        {{#if searchFormEnabled}}
+            {{> searchFormStatistic }}
+        {{/if}}
         <div class="row">
             <div class="twelve columns">
                 <table id="statistic_list" class="u-full-width">
@@ -76,40 +39,46 @@
     </div>
 </template>
 
-<template name="ifCategoriesAlert">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{else}}
-        {{> UI.elseBlock}}
-    {{/if}}
-</template>
-
-<template name="ifCategoriesLink">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{else}}
-        {{> UI.elseBlock}}
-    {{/if}}
-</template>
-
-<template name="ifNewBooking">
-    {{#if isPresent}}
-        {{> UI.contentBlock}}
-    {{/if}}
-</template>
-
-<template name="noCategoriesAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Info:</b> Kategorie(n) zuvor anlegen.</p></strong>
+<template name="notificationAreaStatistic">
+    {{#if isConcerned "statistic"}}
+        <div class="row">
+            <div class="twelve columns signin-prop notification">
+                <strong><p><b>{{notification.type}}</b>{{notification.text}}</p></strong>
+            </div>
         </div>
-    </div>
+    {{/if}}
 </template>
 
-<template name="successBookingAlert">
-    <div class="row">
-        <div class="twelve columns signin-prop notification">
-            <strong><p><b>Bestätigung:</b> Buchung erfolgreich gespeichert.</p></strong>
+<template name="searchFormAreaStatistic">
+    {{#if isSearchFormConcerned "statistic"}}
+        <span class="collapse"><a class="searchForm" style="text-decoration: none"
+                                  href="">{{ searchFormEnabler }}</a></span>
+    {{/if}}
+</template>
+
+<template name="searchFormStatistic">
+    <form id="search_statistic">
+        <div class="row">
+            <div class="one-third column">
+                <label for="search_statistic_von_datum">Von</label>
+                <input type="text" name="search_statistic_von_datum" id="search_statistic_von_datum"
+                       class="u-full-width" {{disabledProperty}}/>
+            </div>
+            <div class="one-third column">
+                <label for="search_statistic_bis_datum">Bis</label>
+                <input type="text" name="search_statistic_bis_datum" id="search_statistic_bis_datum"
+                       class="u-full-width"  {{disabledProperty}}>
+            </div>
+            <div class="one-third column">
+                <label for="search_statistic_category">Kategorie</label>
+                <select name="category" id="search_statistic_category" class="u-full-width">
+                    <option value="all">-- Alle --</option>
+                    {{#each categoryId}}
+                        <option value="{{_id}}" {{isSelected}}>{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
         </div>
-    </div>
+        {{> notificationAreaBookingList }}
+    </form>
 </template>

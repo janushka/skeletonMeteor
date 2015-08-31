@@ -4,17 +4,7 @@
         <div class="container">
             <ul class="navbar-list">
                 <li class="navbar-item">
-                    <a class="navbar-link {{activeRouteClass 'booking_list'}}" href="#" data-popover="#umsatzPopover">Umsätze</a>
-                    <div id="umsatzPopover" class="popover">
-                        <ul class="popover-list">
-                            <li class="popover-item">
-                                <a class="popover-link" href="{{pathFor route='booking_list'}}">Tagesansicht</a>
-                            </li>
-                            <li class="popover-item">
-                                <a class="popover-link" href="{{pathFor route='booking_list'}}">Wochenansicht</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <a class="navbar-link booking-list {{activeRouteClass 'booking_list'}}" href="#" >Umsätze</a>
                 </li>
                 <li class="navbar-item">
                     <a class="navbar-link booking-new {{activeRouteClass 'booking_new'}}" href="#">Neue Buchung</a>

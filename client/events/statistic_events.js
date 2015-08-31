@@ -3,6 +3,14 @@
  */
 
 Template.Statistic.events({
+    'click a.searchForm': function (event, template) {
+        var isf = !Session.get('isSearchForm').isSet;
+        Session.set('isSearchForm', {
+            isSet: isf,
+            caller_template: 'statistic'
+        });
+    },
+
     'click #statistic_search': function (event, template) {
         event.preventDefault();
 

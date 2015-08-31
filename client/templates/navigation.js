@@ -35,6 +35,10 @@ Template.Navigation.events({
         });
     },
 
+    'click .booking-list': function () {
+        Router.go('booking_list');
+    },
+
     'click .booking-new': function () {
         Router.go('booking_new');
     },
