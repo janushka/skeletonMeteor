@@ -93,22 +93,20 @@ Template.searchFormBookingList.onCreated(function () {
 });
 
 Template.searchFormBookingList.rendered = function () {
-    var selfTempl = this;
-
     var datePicker = {};
     var pickerVon = new Pikaday({
         field: document.getElementById('search_booking_list_von_datum'),
         format: 'DD.MM.YYYY',
         onSelect: function () {
-            console.log('Value of testReactive', selfTempl.testReactive.get());
-            selfTempl.testReactive.set('Step 1 Text.');
         },
         onClose: function () {
             if (moment(this.getMoment()).isValid()) {
                 datePicker.vonDatum = this.getMoment().toDate();
+                datePicker.categoryId = $('#search_booking_list_category').val() == 'all' ? undefined : $('#search_booking_list_category').val();
                 Session.set('datePicker', datePicker);
             } else {
                 datePicker.vonDatum = undefined;
+                datePicker.categoryId = undefined;
                 Session.set('datePicker', datePicker);
             }
             console.log('Closed', moment(this.getMoment()).isValid());
@@ -123,9 +121,11 @@ Template.searchFormBookingList.rendered = function () {
         onClose: function () {
             if (moment(this.getMoment()).isValid()) {
                 datePicker.bisDatum = this.getMoment().toDate();
+                datePicker.categoryId = $('#search_booking_list_category').val() == 'all' ? undefined : $('#search_booking_list_category').val();
                 Session.set('datePicker', datePicker);
             } else {
                 datePicker.bisDatum = undefined;
+                datePicker.categoryId = undefined;
                 Session.set('datePicker', datePicker);
             }
             console.log('Closed', moment(this.getMoment()).isValid());
@@ -145,7 +145,7 @@ Template.searchFormBookingList.helpers({
         });
     },
 
-    smallText: function() {
+    smallText: function () {
         return Template.instance().testReactive.get();
     }
 });
@@ -175,10 +175,32 @@ function getQuery() {
     } else {
         var vonDatum = Session.get('datePicker').vonDatum;
         var bisDatum = Session.get('datePicker').bisDatum;
+        var selectedCategoryId = Session.get('datePicker').categoryId;
+
         var query = {};
-        if (vonDatum != undefined && bisDatum != undefined) {
+
+        if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId == undefined) {
+            query = {datum: {$gte: vonDatum}};
+        }
+        if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId == undefined) {
+            query = {datum: {$lte: bisDatum}};
+        }
+        if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId != undefined) {
+            query = {$and: [{datum: {$gte: vonDatum}}, {categoryId: selectedCategoryId}]};
+        }
+        if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId != undefined) {
+            query = {$and: [{datum: {$lte: bisDatum}}, {categoryId: selectedCategoryId}]};
+        }
+        if (vonDatum == undefined && bisDatum == undefined && selectedCategoryId != undefined) {
+            query = {categoryId: selectedCategoryId};
+        }
+        if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId != undefined) {
+            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {categoryId: selectedCategoryId}]};
+        }
+        if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId == undefined) {
             query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};
         }
+
         return query;
     }
     //console.log('In getCurrentBookings: ' + vonDatum + ' ' + bisDatum);
