@@ -11,6 +11,7 @@ Template.BookingList.events({
             isSet: isf,
             caller_template: 'booking_list'
         });
+        Session.set('bookingListSearchFormEnabled', isf);
     },
 
     'click a.editBooking': function (event, template) {

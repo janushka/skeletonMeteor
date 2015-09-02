@@ -26,6 +26,11 @@ Template.BookingList.onCreated(function () {
             isSet: false,
             caller_template: 'booking_list'
         });
+    } else {
+        Session.set('isSearchForm', {
+            isSet: Session.get('bookingListSearchFormEnabled') == undefined ? false : Session.get('bookingListSearchFormEnabled'),
+            caller_template: 'booking_list'
+        });
     }
 });
 

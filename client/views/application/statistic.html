@@ -9,33 +9,37 @@
         {{#if searchFormEnabled}}
             {{> searchFormStatistic }}
         {{/if}}
-        <div class="row">
-            <div class="twelve columns">
-                <table id="statistic_list" class="u-full-width">
-                    <thead class="slab-700">
-                    <tr>
-                        <th class="align-left">Kategorie</th>
-                        <th class="align-left">Summe (€)</th>
-                        <th class="align-left">Gesamt</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{#each Categories}}
+        {{#if bookingsExist}}
+            <div class="row">
+                <div class="twelve columns">
+                    <table id="statistic_list" class="u-full-width">
+                        <thead class="slab-700">
                         <tr>
-                            <td>{{ name }}</td>
-                            <td>{{ accumulatedAmount }}</td>
-                            <td></td>
+                            <th class="align-left">Kategorie</th>
+                            <th class="align-left">Summe (€)</th>
+                            <th class="align-left">Gesamt</th>
                         </tr>
-                    {{/each}}
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>{{ total }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {{#each Categories}}
+                            <tr>
+                                <td>{{ name }}</td>
+                                <td>{{ accumulatedAmount }}</td>
+                                <td></td>
+                            </tr>
+                        {{/each}}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>{{ total }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        {{else}}
+            {{> notificationAreaStatistic }}
+        {{/if}}
     </div>
 </template>
 
@@ -79,6 +83,6 @@
                 </select>
             </div>
         </div>
-        {{> notificationAreaBookingList }}
+        {{> notificationAreaStatistic }}
     </form>
 </template>
