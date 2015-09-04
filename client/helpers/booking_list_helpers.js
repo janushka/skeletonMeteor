@@ -41,8 +41,8 @@ Template.BookingList.helpers({
 
     bookings: function () {
         // Retrieve bookings for selected (or not selected) range and category
-        var currentQuery = getQuery();
-        var results = Bookings.find(currentQuery);
+        //var currentQuery = getQuery();
+        var results = Bookings.find(getQuery());
         return results;
     },
 

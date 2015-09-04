@@ -8,4 +8,4 @@ LocalBookings = new Meteor.Collection();
 LocalCategories = new Meteor.Collection();
 
 Amounts = new Meteor.Collection("amounts");
-Authors = new Meteor.Collection("authors");
+AmountPerCategory = new Meteor.Collection("amountPerCategory");

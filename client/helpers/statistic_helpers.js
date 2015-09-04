@@ -4,6 +4,7 @@
 
 Template.Statistic.onCreated(function () {
     Meteor.subscribe("bookings");
+    Meteor.subscribe('amounts');
 
     this.autorun(function () {
         if (Bookings.find().count() == 0) {
@@ -37,14 +38,16 @@ Template.Statistic.helpers({
         return Session.get('bookingsExist');
     },
 
-    total: function () {
-        /*var amountList = Amounts.find({}).fetch();
-         var totalAmount = _.reduce(_.pluck(amountList, 'amount'), function (memo, num) {
-         return memo + num;
-         }, 0);*/
+    amounts: function () {
+        // Retrieve amounts and corresponding category for selected (or not selected) range and category
+        //var currentQuery = getQuery();
+        var results = AmountPerCategory.find(getQuery());
+        return results;
+    },
 
-        var categoriesList = Categories.find().fetch();
-        var totalAmount = _.reduce(_.pluck(categoriesList, 'accumulatedAmount'), function (memo, num) {
+    total: function () {
+        var amountPerCategory = AmountPerCategory.find(getQuery()).fetch();
+        var totalAmount = _.reduce(_.pluck(amountPerCategory, 'amount'), function (memo, num) {
             return memo + num;
         }, 0);
 
@@ -153,7 +156,7 @@ function getQuery() {
     } else {
         var vonDatum = Session.get('datePicker').vonDatum;
         var bisDatum = Session.get('datePicker').bisDatum;
-        var selectedCategoryId = Session.get('datePicker').categoryId;
+        var selectedCategoryId = Session.get('datePicker').categoryId == undefined ? undefined : Categories.findOne(Session.get('datePicker').categoryId).name;
 
         var query = {};
 
@@ -164,16 +167,16 @@ function getQuery() {
             query = {datum: {$lte: bisDatum}};
         }
         if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId != undefined) {
-            query = {$and: [{datum: {$gte: vonDatum}}, {categoryId: selectedCategoryId}]};
+            query = {$and: [{datum: {$gte: vonDatum}}, {_id: selectedCategoryId}]};
         }
         if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId != undefined) {
-            query = {$and: [{datum: {$lte: bisDatum}}, {categoryId: selectedCategoryId}]};
+            query = {$and: [{datum: {$lte: bisDatum}}, {_id: selectedCategoryId}]};
         }
         if (vonDatum == undefined && bisDatum == undefined && selectedCategoryId != undefined) {
-            query = {categoryId: selectedCategoryId};
+            query = {_id: selectedCategoryId};
         }
         if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId != undefined) {
-            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {categoryId: selectedCategoryId}]};
+            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {_id: selectedCategoryId}]};
         }
         if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId == undefined) {
             query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};

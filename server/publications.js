@@ -30,7 +30,7 @@ Meteor.publish('limitedBookings', function (options) {
     return Bookings.find({}, options);
 });
 
-Meteor.publish('amounts', function () {
+Meteor.publish('amounts', function (query) {
     var subscription = this;
     var initiated = false;
     var currentTotal = {};
@@ -38,8 +38,10 @@ Meteor.publish('amounts', function () {
     var db = MongoInternals.defaultRemoteCollectionDriver().mongo.db;
 
     var pipeline = [
-        {$match: {name: 'MacBookair'}},
-        {$group: {_id: '$type', total: {$sum: '$price'}}}
+        //{$match: query},
+        //{$match: {categoryId: 'PwCwv5xNhd9qZGuBG'}},
+        {$match: {}},
+        {$group: {_id: '$category',  total_amount: {$sum: '$amount'}}}
     ];
 
     db.collection('bookings').aggregate(
@@ -49,34 +51,33 @@ Meteor.publish('amounts', function () {
                 console.log('Aggregation result', result);
                 _.each(result, function (r) {
                     currentTotal.sum = r.total;
-                    subscription.added('numberOfMBA', r._id, {
-                        number: r.total
+                    subscription.added('amountPerCategory', r._id, {
+                        amount: r.total_amount
                     });
-                })
+                });
             }
         )
     );
 
-    var computerHandle = Bookings
+    var amountsHandle = AmountPerCategory
         .find()
         .observeChanges({
             added: function (id, fields) {
                 if (!initiated) return;
-                var currentID = fields.type;
-                currentTotal.sum += fields.price;
+                var currentID = fields.category;
+                currentTotal.sum += fields.amount;
                 console.log('Current ID', currentID);
                 console.log('Current Total', currentTotal);
-                subscription.changed('numberOfMBA', currentID, {number: currentTotal.sum});
+                subscription.changed('amountPerCategory', currentID, {amount: currentTotal.sum});
             }
         });
 
     initiated = true;
     subscription.onStop(function () {
-        computerHandle.stop();
+        amountsHandle.stop();
     });
 
     subscription.ready();
 });
 
 Categories._ensureIndex({name: 1}, {unique: true});
-Amounts._ensureIndex({category: 1}, {unique: true});
