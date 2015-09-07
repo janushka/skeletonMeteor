@@ -1,15 +1,15 @@
 <template name="Statistic">
     <div class="docs-section">
-        <h6 class="docs-header">Statistik {{> searchFormAreaStatistic }}</h6>
+        <h6 class="docs-header">Statistik {{#if bookingsExist}}{{> searchFormAreaStatistic }}{{/if}}</h6>
 
         <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
             Tag, Woche, Monat und Jahr aufgerufen werden.
             Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
             Standardmäßig wird die aktuelle Woche vorselektiert.</p>
-        {{#if searchFormEnabled}}
-            {{> searchFormStatistic }}
-        {{/if}}
         {{#if bookingsExist}}
+            {{#if searchFormEnabled}}
+                {{> searchFormStatistic }}
+            {{/if}}
             <div class="row">
                 <div class="twelve columns">
                     <table id="statistic_list" class="u-full-width">

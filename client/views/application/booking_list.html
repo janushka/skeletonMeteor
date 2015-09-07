@@ -1,15 +1,15 @@
 <template name="BookingList">
     <div class="docs-section">
-        <h6 class="docs-header">Ausgaben {{> searchFormAreaBookingList }}</h6>
+        <h6 class="docs-header">Ausgaben {{#if bookingsExist}}{{> searchFormAreaBookingList }}{{/if}}</h6>
 
         <p>Pflege der Ein- und Ausgaben. Unter dem Menüpunkt "<u>Umsätze</u>" können Ein- und Ausgaben nach aktuellem
             Tag, Woche, Monat und Jahr aufgerufen werden.
             Alternativ können auch "alle" existierenden Buchungen ausgegeben werden.
             Standardmäßig wird die aktuelle Woche vorselektiert.</p>
-        {{#if searchFormEnabled}}
-            {{> searchFormBookingList }}
-        {{/if}}
         {{#if bookingsExist}}
+            {{#if searchFormEnabled}}
+                {{> searchFormBookingList }}
+            {{/if}}
             <div class="row">
                 <div class="twelve columns">
                     <table id="booking_list" class="u-full-width">

@@ -7,6 +7,8 @@
 Template.BookingList.onCreated(function () {
     Meteor.subscribe("bookings");
 
+    Session.setDefault('datePicker', undefined);
+
     this.autorun(function () {
         if (Bookings.find().count() == 0) {
             Session.set('notification', {
@@ -41,7 +43,6 @@ Template.BookingList.helpers({
 
     bookings: function () {
         // Retrieve bookings for selected (or not selected) range and category
-        //var currentQuery = getQuery();
         var results = Bookings.find(getQuery());
         return results;
     },

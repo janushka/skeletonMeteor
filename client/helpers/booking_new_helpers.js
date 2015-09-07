@@ -48,6 +48,7 @@ Template.BookingNew.rendered = function () {
         $('#new_booking_category').prop('disabled', false);
         $('#new_booking_remark').prop('disabled', false);
         $('#submit_booking').prop('disabled', false);
+        $('#new_booking_fix_expenses').prop('disabled', false);
     }
 
     function disableFields() {
@@ -56,6 +57,7 @@ Template.BookingNew.rendered = function () {
         $('#new_booking_category').prop('disabled', true);
         $('#new_booking_remark').prop('disabled', true);
         $('#submit_booking').prop('disabled', true);
+        $('#new_booking_fix_expenses').prop('disabled', true);
     }
 };
 
