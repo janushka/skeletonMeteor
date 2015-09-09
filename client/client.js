@@ -5,24 +5,7 @@
 Meteor.startup(function () {
     console.log('In the Startup-method!');
 
-    //var bookingsCursor = Bookings.find();
-
-    /*var categoriesLoaded = false;
-    Meteor.subscribe("categories", function () {
-        // at this point all new categories sent down are legitimately new ones
-        categoriesLoaded = true;
-    });
-    var bookingsLoaded = false;
-    Meteor.subscribe("bookings", function () {
-        // at this point all new bookings sent down are legitimately new ones
-        bookingsLoaded = true;
-    });
-    var amountsLoaded = false;
-    Meteor.subscribe("amounts", function () {
-        // at this point all new bookings sent down are legitimately new ones
-        amountsLoaded = true;
-    });
-
+    /*
     var bookingsCursor = Bookings.find();
     var categoryCursor = Categories.find();
     var amountCursor = Amounts.find();

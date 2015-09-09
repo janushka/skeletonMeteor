@@ -43,7 +43,7 @@ Template.BookingList.helpers({
 
     bookings: function () {
         // Retrieve bookings for selected (or not selected) range and category
-        var results = Bookings.find(getQuery());
+        var results = Bookings.find(getQuery(), {sort: {datum: -1}});
         return results;
     },
 

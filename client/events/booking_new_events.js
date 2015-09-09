@@ -15,6 +15,9 @@ Template.BookingNew.events({
         localBooking.category = Categories.findOne({_id: Session.get('selectedCategoryId').categoryId}).name;
         localBooking.categoryId = Session.get('selectedCategoryId').categoryId;
         localBooking.remark = S($('#new_booking_remark').val()).collapseWhitespace().s;
+        if ($('#new_booking_fix_expense').prop('checked')) {
+            localBooking.fixExpenseId = Random.id();
+        }
 
         Meteor.call('createBooking', localBooking, function (error) {
             if (error) {
