@@ -1,6 +1,7 @@
-/**
+/*
+/!**
  * Created by Njoku on 29.10.2014.
- */
+ *!/
 
 ManipulateCategoriesAmounts = {
     updateCategoriesByRange: function (range) {
@@ -441,4 +442,4 @@ ManipulateCategoriesAmounts = {
 
 function findOptions() {
     return {sort:{datum: -1}, limit: Session.get('bookingsLimit')};
-}
+}*/

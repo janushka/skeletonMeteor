@@ -6,6 +6,8 @@ Template.BookingEdit.events({
     'click #save_booking': function (event, template) {
         event.preventDefault();
 
+        var currentBooking = Bookings.findOne({_id: Session.get('selectedBookingId')});
+
         var localBooking = {};
         localBooking._id = Session.get('selectedBookingId');
         localBooking.amount = S($('#edit_booking_amount').val()).replaceAll(',', '.').toFloat(2);
@@ -13,8 +15,13 @@ Template.BookingEdit.events({
         localBooking.categoryId = S($('#edit_booking_category').val()).collapseWhitespace().s;
         localBooking.category = S($('#edit_booking_category option:selected').text()).collapseWhitespace().s;
         localBooking.remark = S($('#edit_booking_remark').val()).collapseWhitespace().s;
-
-        var currentBooking = Bookings.findOne({_id: Session.get('selectedBookingId')});
+        if ($('#edit_booking_fix_expense').prop('checked')) {
+            if (currentBooking.fixExpenseId == undefined) {
+                localBooking.fixExpenseId = Random.id();
+            } else {
+                localBooking.fixExpenseId = currentBooking.fixExpenseId;
+            }
+        }
 
         if (_.isEqual(localBooking, currentBooking)) {
             Session.set('notification', {

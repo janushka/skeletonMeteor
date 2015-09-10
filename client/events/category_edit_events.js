@@ -10,6 +10,7 @@ Template.CategoryEdit.events({
         localCategory._id = Session.get('selectedCategoryId').categoryId;
         localCategory.name = S($('#edit_category_name').val()).collapseWhitespace().s;
         localCategory.description = S($('#edit_category_description').val()).collapseWhitespace().s;
+        localCategory.description = S($('#edit_category_description').val()).collapseWhitespace().s;
 
         var currentCategory = Categories.findOne({_id: localCategory._id});
 

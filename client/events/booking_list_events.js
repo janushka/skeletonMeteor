@@ -19,6 +19,11 @@ Template.BookingList.events({
         var categoryId = $(event.currentTarget).attr('category-id');
         Session.set('selectedBookingId', bookingId);
         Session.set('selectedCategoryId', categoryId);
+    },
+
+    'click a.loadMoreBookings': function (event, template) {
+        var newLimit = Session.get('limit') + 10;
+        Session.set('limit', newLimit);
     }
 });
 

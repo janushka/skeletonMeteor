@@ -55,5 +55,9 @@ Template.BookingEdit.helpers({
         } else {
             return '';
         }
+    },
+
+    isChecked: function () {
+        return Bookings.findOne({_id: Session.get('selectedBookingId')}).fixExpenseId == undefined ? false : true;
     }
 });

@@ -6,6 +6,16 @@ Meteor.publish("bookings", function () {
     return Bookings.find();
 });
 
+// TODO: will be uses later on!
+Meteor.publish('limitedBookings', function (options) {
+    check(options, {
+        sort: Object,
+        limit: Number
+    });
+    console.log('The limit is: ' + options.limit);
+    return Bookings.find({}, options);
+});
+
 Meteor.publish("categories", function () {
     return Categories.find({}, {sort: {name: 1}});
 });
@@ -20,16 +30,6 @@ Meteor.publish('limitedCategories', function (categoriesNames) {
     return categories;
 });
 
-Meteor.publish('limitedBookings', function (options) {
-    check(options, {
-        sort: Object,
-        limit: Number
-    });
-    //console.log('The sorting order is: ' + options.sort);
-    console.log('The limit is: ' + options.limit);
-    return Bookings.find({}, options);
-});
-
 Meteor.publish('amounts', function (query) {
     var subscription = this;
     var initiated = false;
@@ -38,10 +38,8 @@ Meteor.publish('amounts', function (query) {
     var db = MongoInternals.defaultRemoteCollectionDriver().mongo.db;
 
     var pipeline = [
-        //{$match: query},
-        //{$match: {categoryId: 'PwCwv5xNhd9qZGuBG'}},
         {$match: {}},
-        {$group: {_id: '$category',  total_amount: {$sum: '$amount'}}}
+        {$group: {_id: '$category', total_amount: {$sum: '$amount'}}}
     ];
 
     db.collection('bookings').aggregate(

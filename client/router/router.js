@@ -85,20 +85,6 @@ Router.route("test", {
             console.log("The result is ", result);
         });
     }
-
-    //   data: function() {
-    //console.log("The DATA is ", Util.getResponse("getSomeAuthors")[0]);
-
-    //},
-    //action: function () {
-    //console.log("The data is ", Util.getResponse("getSomeAuthors")[0]);
-    //  this.data();
-    //},
-    //waitOn: function () {
-    // Call the async function, with an optional data argument
-    //  return Util.waitOnServer("getSomeAuthors", {name: 'Janne'});
-    //return Util.waitOnServer("testWaitOn", {foo: "bar"}, {bar: "foo"}, {name: 'Janne'});
-    //}
 });
 
 // CONTROLLERS
@@ -112,10 +98,10 @@ HomeController = RouteController.extend({
 });
 
 BookingsListController = RouteController.extend({
-    increment: 5,
-    /*bookingsLimit: function () {
+    /*increment: 5,
+    /!*bookingsLimit: function () {
      return parseInt(this.params.bookingsLimit) || this.increment;
-     },*/
+     },*!/*/
     findOptions: function () {
         return {sort: {datum: -1}, limit: 10};
         //return {sort: {datum: -1}, limit: this.bookingsLimit()};
@@ -123,7 +109,7 @@ BookingsListController = RouteController.extend({
     waitOn: function () {
         //return [Util.waitOnServer("getLimitedBookings", this.findOptions()), Util.waitOnServer("getAllCategories")];
         //return Meteor.subscribe('limitedBookings', this.findOptions());
-        return Meteor.subscribe('bookings', this.findOptions());
+        //return Meteor.subscribe('bookings', this.findOptions());
     },
     /*bookings: function () {
      return Bookings.find({}, this.findOptions());
