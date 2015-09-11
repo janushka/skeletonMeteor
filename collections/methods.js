@@ -38,5 +38,15 @@ Meteor.methods({
 
     deleteCategory: function (id) {
         Categories.remove({_id: id});
+    },
+
+    /* Query Part */
+
+    createOrUpdateStatisticQuery: function (query) {
+
+
+        //var queryId = Queries.upsert("currentQuery", {$set: {query: query}});
+        var queryId = Queries.upsert("currentQuery", {$set: {query: query}});
+        return queryId;
     }
 });

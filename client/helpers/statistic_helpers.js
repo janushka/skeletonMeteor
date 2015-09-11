@@ -6,6 +6,8 @@ Template.Statistic.onCreated(function () {
     Meteor.subscribe("bookings");
     Meteor.subscribe('amounts');
 
+    Session.set('datePicker', undefined);
+
     this.autorun(function () {
         if (Bookings.find().count() == 0) {
             Session.set('notification', {
@@ -40,8 +42,9 @@ Template.Statistic.helpers({
 
     amounts: function () {
         // Retrieve amounts and corresponding category for selected (or not selected) range and category
-        //var currentQuery = getQuery();
-        var results = AmountPerCategory.find(getQuery());
+        var currentQuery = getQuery();
+        //var results = AmountPerCategory.find(getQuery());
+        var results = AmountPerCategory.find(currentQuery);
         return results;
     },
 
@@ -161,26 +164,46 @@ function getQuery() {
         var query = {};
 
         if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId == undefined) {
-            query = {datum: {$gte: vonDatum}};
+            //query = {datum: {$gte: vonDatum}};
+            query.vonDatum = vonDatum;
         }
         if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId == undefined) {
-            query = {datum: {$lte: bisDatum}};
+            //query = {datum: {$lte: bisDatum}};
+            query.bisDatum = bisDatum;
         }
         if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId != undefined) {
-            query = {$and: [{datum: {$gte: vonDatum}}, {_id: selectedCategoryId}]};
+            //query = {$and: [{datum: {$gte: vonDatum}}, {category: selectedCategoryId}]};
+            query.vonDatum = vonDatum;
+            query.categoryId = selectedCategoryId;
         }
         if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId != undefined) {
-            query = {$and: [{datum: {$lte: bisDatum}}, {_id: selectedCategoryId}]};
+            //query = {$and: [{datum: {$lte: bisDatum}}, {category: selectedCategoryId}]};
+            query.bisDatum = bisDatum;
+            query.categoryId = selectedCategoryId;
         }
         if (vonDatum == undefined && bisDatum == undefined && selectedCategoryId != undefined) {
-            query = {_id: selectedCategoryId};
+            //query = {category: selectedCategoryId};
+            query.categoryId = selectedCategoryId;
         }
         if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId != undefined) {
-            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {_id: selectedCategoryId}]};
+            //query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {category: selectedCategoryId}]};
+            query.vonDatum = vonDatum;
+            query.bisDatum = bisDatum;
+            query.categoryId = selectedCategoryId;
         }
         if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId == undefined) {
-            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};
+            //query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};
+            query.vonDatum = vonDatum;
+            query.bisDatum = bisDatum;
         }
+
+        Meteor.call('createOrUpdateStatisticQuery', query, function (error, result) {
+            if (error) {
+                console.log('Queries:', error);
+            } else {
+                console.log('Queries:', result);
+            }
+        });
 
         return query;
     }

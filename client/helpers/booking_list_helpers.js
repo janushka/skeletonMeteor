@@ -36,6 +36,14 @@ Template.BookingList.onCreated(function () {
     }
 });
 
+Template.BookingList.rendered = function () {
+
+    var datePicker = {};
+    $('#search_booking_list_von_datum').val(moment().startOf('month').format("DD.MM.YYYY"));
+    datePicker.vonDatum = moment().startOf('month').toDate();
+    Session.set('datePicker', datePicker);
+}
+
 Template.BookingList.helpers({
     bookingsExist: function () {
         return Session.get('bookingsExist');
@@ -99,12 +107,16 @@ Template.searchFormBookingList.onCreated(function () {
 });
 
 Template.searchFormBookingList.rendered = function () {
+
     var datePicker = {};
+    $('#search_booking_list_von_datum').val(moment().startOf('month').format("DD.MM.YYYY"));
+    datePicker.vonDatum = moment().startOf('month').toDate();
+    Session.set('datePicker', datePicker);
+
     var pickerVon = new Pikaday({
         field: document.getElementById('search_booking_list_von_datum'),
         format: 'DD.MM.YYYY',
-        onSelect: function () {
-        },
+        //defaultDate  : moment().startOf('month').toDate(),
         onClose: function () {
             if (moment(this.getMoment()).isValid()) {
                 datePicker.vonDatum = this.getMoment().toDate();
@@ -173,6 +185,7 @@ function validateInputDates() {
 
 function getQuery() {
     if (Session.get('datePicker') == undefined) {
+        //return {$and: [{datum: {$gte: moment().startOf('month').toDate()}}, {datum: {$lte: moment().endOf('month').toDate()}}]};
         return {};
     } else {
         var vonDatum = Session.get('datePicker').vonDatum;

@@ -37,8 +37,33 @@ Meteor.publish('amounts', function (query) {
 
     var db = MongoInternals.defaultRemoteCollectionDriver().mongo.db;
 
+    //var temps = JSON.parse(Queries.find().fetch());
+    var query = Queries.findOne();
+    console.log('QUERY', query.query);
+
+    var queryArr = [];
+    var newQuery = {};
+    for (k in query.query) {
+        switch (k) {
+            case 'vonDatum':
+                queryArr.push({datum: {$gte: query.query.vonDatum}});
+                break;
+            case 'bisDatum':
+                queryArr.push({datum: {$lte: query.query.bisDatum}});
+                break;
+            case 'categoryId':
+                queryArr.push({category: query.query.categoryId});
+                break;
+        }
+    }
+    newQuery = {$and: queryArr};
+    console.log('QUERY-ARRAY', newQuery);
+
     var pipeline = [
-        {$match: {}},
+        {$match: newQuery},
+        //{$match: {datum: {$lte: moment("09-01-2015", "MM-DD-YYYY").toDate()}}},
+        //{$match: {}},
+        //{$match: query},
         {$group: {_id: '$category', total_amount: {$sum: '$amount'}}}
     ];
 
@@ -46,6 +71,7 @@ Meteor.publish('amounts', function (query) {
         pipeline,
         Meteor.bindEnvironment(
             function (err, result) {
+
                 console.log('Aggregation result', result);
                 _.each(result, function (r) {
                     currentTotal.sum = r.total;
