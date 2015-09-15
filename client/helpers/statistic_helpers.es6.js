@@ -43,13 +43,15 @@ Template.Statistic.helpers({
     amounts: function () {
         // Retrieve amounts and corresponding category for selected (or not selected) range and category
         var currentQuery = getQuery();
-        //var results = AmountPerCategory.find(getQuery());
-        var results = AmountPerCategory.find(currentQuery);
+        var results = getAmountPerCategory(currentQuery);
         return results;
     },
 
     total: function () {
-        var amountPerCategory = AmountPerCategory.find(getQuery()).fetch();
+        //var amountPerCategory = AmountPerCategory.find(getQuery()).fetch();
+
+        var currentQuery = getQuery();
+        var amountPerCategory = getAmountPerCategory(currentQuery);
         var totalAmount = _.reduce(_.pluck(amountPerCategory, 'amount'), function (memo, num) {
             return memo + num;
         }, 0);
@@ -82,6 +84,10 @@ Template.searchFormStatistic.onCreated(function () {
 
 Template.searchFormStatistic.rendered = function () {
     var datePicker = {};
+    $('#search_statistic_von_datum').val(moment().startOf('month').format("DD.MM.YYYY"));
+    datePicker.vonDatum = moment().startOf('month').toDate();
+    Session.set('datePicker', datePicker);
+
     var pickerVon = new Pikaday({
         field: document.getElementById('search_statistic_von_datum'),
         format: 'DD.MM.YYYY',
@@ -164,48 +170,82 @@ function getQuery() {
         var query = {};
 
         if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId == undefined) {
-            //query = {datum: {$gte: vonDatum}};
-            query.vonDatum = vonDatum;
+            query = {datum: {$gte: vonDatum}};
+            //query.vonDatum = vonDatum;
         }
         if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId == undefined) {
-            //query = {datum: {$lte: bisDatum}};
-            query.bisDatum = bisDatum;
+            query = {datum: {$lte: bisDatum}};
+            //query.bisDatum = bisDatum;
         }
         if (vonDatum != undefined && bisDatum == undefined && selectedCategoryId != undefined) {
-            //query = {$and: [{datum: {$gte: vonDatum}}, {category: selectedCategoryId}]};
-            query.vonDatum = vonDatum;
-            query.categoryId = selectedCategoryId;
+            query = {$and: [{datum: {$gte: vonDatum}}, {category: selectedCategoryId}]};
+            //query.vonDatum = vonDatum;
+            //query.categoryId = selectedCategoryId;
         }
         if (vonDatum == undefined && bisDatum != undefined && selectedCategoryId != undefined) {
-            //query = {$and: [{datum: {$lte: bisDatum}}, {category: selectedCategoryId}]};
-            query.bisDatum = bisDatum;
-            query.categoryId = selectedCategoryId;
+            query = {$and: [{datum: {$lte: bisDatum}}, {category: selectedCategoryId}]};
+            //query.bisDatum = bisDatum;
+            //query.categoryId = selectedCategoryId;
         }
         if (vonDatum == undefined && bisDatum == undefined && selectedCategoryId != undefined) {
-            //query = {category: selectedCategoryId};
-            query.categoryId = selectedCategoryId;
+            query = {category: selectedCategoryId};
+            //query.categoryId = selectedCategoryId;
         }
         if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId != undefined) {
-            //query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {category: selectedCategoryId}]};
-            query.vonDatum = vonDatum;
-            query.bisDatum = bisDatum;
-            query.categoryId = selectedCategoryId;
+            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}, {category: selectedCategoryId}]};
+            //query.vonDatum = vonDatum;
+            //query.bisDatum = bisDatum;
+            //query.categoryId = selectedCategoryId;
         }
         if (vonDatum != undefined && bisDatum != undefined && selectedCategoryId == undefined) {
-            //query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};
-            query.vonDatum = vonDatum;
-            query.bisDatum = bisDatum;
+            query = {$and: [{datum: {$gte: vonDatum}}, {datum: {$lte: bisDatum}}]};
+            //query.vonDatum = vonDatum;
+            //query.bisDatum = bisDatum;
         }
 
-        Meteor.call('createOrUpdateStatisticQuery', query, function (error, result) {
-            if (error) {
-                console.log('Queries:', error);
-            } else {
-                console.log('Queries:', result);
-            }
-        });
+        /*Meteor.call('createOrUpdateStatisticQuery', query, function (error, result) {
+         if (error) {
+         console.log('Queries:', error);
+         } else {
+         console.log('Queries:', result);
+         }
+         });*/
 
         return query;
     }
     //console.log('In getCurrentBookings: ' + vonDatum + ' ' + bisDatum);
+}
+
+function getAmountPerCategory(query) {
+    var amountPerCategory = new Map();
+    var bookingsList = [];
+    var categoriesList = Categories.find().fetch();
+
+    bookingsList = Bookings.find(query).fetch();
+
+    var groupedBookings = _.groupBy(bookingsList, function (booking) {
+        return booking.category;
+    });
+
+    // Bookings must exist in order to display any amount related statistics greater than 0.
+    if (_.isEmpty(groupedBookings)) {
+        _.each(categoriesList, function (element, index, list) {
+            amountPerCategory.set(element.name, {category: element.name, amount: 0});
+        });
+    } else {
+        _.each(bookingsList, function (element, index, list) {
+            var accAmount = _.reduce(_.pluck(groupedBookings[element.category], 'amount'), function (memo, num) {
+                return memo + num;
+            }, 0);
+
+            amountPerCategory.set(element.category, {category: element.category, amount: parseFloat(accAmount.toFixed(2))});
+            //Categories.update({_id: element.categoryId}, {$set: {accumulatedAmount: parseFloat(accAmount.toFixed(2))}});
+        });
+        var diffList = _.difference(_.pluck(categoriesList, 'name'), _.pluck(bookingsList, 'category'));
+        _.each(diffList, function (element, index, list) {
+            amountPerCategory.set(element, {category: element, amount: 0});
+            //Categories.update({_id: element}, {$set: {accumulatedAmount: 0}});
+        });
+    }
+    return [...amountPerCategory.values()];
 }
